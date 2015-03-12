@@ -12,7 +12,7 @@ require('./server/db/models/email');
 var Email = mongoose.model('Email');
 
 var emailLimit = 1000;
-var userEmail = 'colinvanlang@gmail.com';
+var userEmail = process.argv[2];
 var emailIds = [];
 
 
