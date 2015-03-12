@@ -62,7 +62,6 @@ router.get('/', function(req, res, next) {
 	};
 
 	var emailLimit = 1000;
-	res.end();
 	if (process.env.NODE_ENV === 'production') {
 		getEmailsFromGoogle(emailLimit)
 		.then(function(emails) {
@@ -70,12 +69,12 @@ router.get('/', function(req, res, next) {
 		});
 		
 	} else {
-		Email.find().exec().then(function(emails) {
-			emails = emails.map(function(emailObj) {
+		Email.find().exec().then(function(modelEmails) {
+			modelEmails = modelEmails.map(function(emailObj) {
 				return emailObj.email;
 			});
 			console.log('Emails fetched');
-			res.json(emails);
+			res.json(modelEmails);
 		});
 	}
 });
