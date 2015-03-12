@@ -30,7 +30,6 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emai
 
     
   $scope.user = user;
-  console.log($scope.emails);
 
   $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
     $scope.user = null;
