@@ -4,7 +4,7 @@ app.factory('ChartFactory', function(FilterFactory) {
 	var ChartObj = function(x, y, z) {
 		this.x = x;
 		this.y = y;
-		this.z = z;
+		this.size = z || 10;
 	};
 
 	factory.chart = {
@@ -46,8 +46,8 @@ app.factory('ChartFactory', function(FilterFactory) {
 			if (functionName)
 				factory.chart[key]
 				= factory.categoryFunctions[functionName](FilterFactory.data.chartEmails);
-		})
-	}
+		});
+	};
 
 	factory.getD3ChartObj = function() {
 		var arr = [];
@@ -56,7 +56,7 @@ app.factory('ChartFactory', function(FilterFactory) {
 								  factory.chart.yAxis[i],
 								  factory.chart.size[i]));
 		}
-		return arr;
+		return {values: arr, key: 'Hello'};
 	};
 
 	return factory;
