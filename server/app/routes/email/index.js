@@ -5,6 +5,7 @@ var Promise = require('bluebird');
 
 var Google = require('googleapis');
 var Gmail = Google.gmail('v1');
+var oauth2Client = require('./../../../env/googleOauthClient');
 
 var mongoose = require('mongoose');
 var Email = mongoose.model('Email');
@@ -12,57 +13,78 @@ var Email = mongoose.model('Email');
 module.exports = router;
 
 
-var emailLimit;
-var emailIds = [];
-var emails = [];
-var userEmail = 'colinvanlang@gmail.com';
-// Need to figure out userEmail and oauth2Client
 
-// var getEmails = function(oauth2Client, pageToken, callback) {
-// 	Gmail.users.messages.list({
-// 		userId: userEmail,
-// 		pageToken: pageToken,
-// 		auth: oauth2Client
-// 	}, function(err, res) {
-// 		emailIds = emailIds.concat(res.messages.map(function(message) {
-// 			return message.id;
-// 		}));
-// 		emailLimit -= res.resultSizeEstimate;
-// 		if (emailLimit > 0) {
-// 			getEmails(oauth2Client, res.nextPageToken, callback);
-// 		} else (callback());
-// 	});
-// };
+router.get('/', function(req, res, next) {
+	var getEmailsFromGoogle = function(emailLimit) {
+		var userEmail = req.user.email;
+		var emailIds = [];
+		var emails = [];
 
-// var promise = new Promise(function(resolve, reject) {
-// 	getEmails(oauth2Client, null, resolve);
-// });
+		var getEmails = function(oauth2Client, pageToken, callback) {
+			console.log('...fetching emails');
+			Gmail.users.messages.list({
+				userId: userEmail,
+				pageToken: pageToken,
+				auth: oauth2Client
+			}, function(err, response) {
+				emailIds = emailIds.concat(response.messages.map(function(message) {
+					return message.id;
+				}));
+				emailLimit -= response.messages.length;
+				if (emailLimit > 0) {
+					getEmails(oauth2Client, response.nextPageToken, callback);
+				} else (callback());
+			});
+		};
+		console.log('in the function');
 
-router.get('/', function(req, res, send) {
-	emailLimit = 10000;
-	emailIds = [];
-	emails = [];
-	// if (process.env.NODE_ENV === 'production') {
-	// 	promise.then(function() {
-	// 		async.each(emailIds, function(emailId, done) {
-	// 			Gmail.users.messages.get({
-	// 				userId: userEmail,
-	// 				id: emailId,
-	// 				auth: oauth2Client
-	// 			}, function(err, message) {
-	// 				emails.push(message);
-	// 				done();
-	// 			});
-	// 		}, function() {
-	// 			res.json(emails);
-	// 		});
-	// 	});
-	// } else {
+		return new Promise(function(resolve, reject) {
+			(new Promise(function(resolve, reject) {
+				getEmails(oauth2Client, null, resolve);
+			})).then(function() {
+				console.log('populating email IDs');
+				async.each(emailIds, function(emailId, done) {
+					Gmail.users.messages.get({
+						userId: userEmail,
+						id: emailId,
+						auth: oauth2Client
+					}, function(err, message) {
+						if (err) console.log(err);
+						emails.push(message);
+						done();
+					});
+				}, function() {
+					console.log('Population done');
+					resolve(emails);
+				});
+			});
+		});
+	};
+
+	var emailLimit = 1000;
+	res.end();
+	if (process.env.NODE_ENV === 'production') {
+		getEmailsFromGoogle(emailLimit)
+		.then(function(emails) {
+			res.json(emails);
+		});
+		
+	} else {
 		Email.find().exec().then(function(emails) {
 			emails = emails.map(function(emailObj) {
 				return emailObj.email;
 			});
+			console.log('Emails fetched');
 			res.json(emails);
 		});
-	// }
+	}
+});
+
+router.get('/callback', function(req, res, next) {
+	
+	oauth2Client.getToken(req.query.code, function(err, tokens) {
+		if (err) return next(err);
+		oauth2Client.setCredentials(tokens);
+		res.redirect('/');
+	});
 });

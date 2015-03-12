@@ -21,5 +21,5 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emai
 
   $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
     $scope.user = null;
-  })
+  });
 });
