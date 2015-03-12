@@ -5,58 +5,20 @@ var Promise = require('bluebird');
 
 var Google = require('googleapis');
 var Gmail = Google.gmail('v1');
+var GoogleConfig = require('./../../../env').GOOGLE;
+var OAuth2 = Google.auth.OAuth2;
+var oauth2Client = {};
 
 var mongoose = require('mongoose');
 var Email = mongoose.model('Email');
 
 module.exports = router;
 
+router.get('/', function(req, res, next) {
+	var emailLimit = 10000;
 
-var emailLimit;
-var emailIds = [];
-var emails = [];
-var userEmail = 'colinvanlang@gmail.com';
-// Need to figure out userEmail and oauth2Client
-
-// var getEmails = function(oauth2Client, pageToken, callback) {
-// 	Gmail.users.messages.list({
-// 		userId: userEmail,
-// 		pageToken: pageToken,
-// 		auth: oauth2Client
-// 	}, function(err, res) {
-// 		emailIds = emailIds.concat(res.messages.map(function(message) {
-// 			return message.id;
-// 		}));
-// 		emailLimit -= res.resultSizeEstimate;
-// 		if (emailLimit > 0) {
-// 			getEmails(oauth2Client, res.nextPageToken, callback);
-// 		} else (callback());
-// 	});
-// };
-
-// var promise = new Promise(function(resolve, reject) {
-// 	getEmails(oauth2Client, null, resolve);
-// });
-
-router.get('/', function(res, req, send) {
-	emailLimit = 10000;
-	emailIds = [];
-	emails = [];
 	// if (process.env.NODE_ENV === 'production') {
-	// 	promise.then(function() {
-	// 		async.each(emailIds, function(emailId, done) {
-	// 			Gmail.users.messages.get({
-	// 				userId: userEmail,
-	// 				id: emailId,
-	// 				auth: oauth2Client
-	// 			}, function(err, message) {
-	// 				emails.push(message);
-	// 				done();
-	// 			});
-	// 		}, function() {
-	// 			res.json(emails);
-	// 		});
-	// 	});
+		
 	// } else {
 		Email.find().exec().then(function(emails) {
 			emails = emails.map(function(emailObj) {
@@ -65,4 +27,17 @@ router.get('/', function(res, req, send) {
 			res.json(emails);
 		});
 	// }
+});
+
+router.get('/callback', function(req, res, next) {
+	console.log('a')
+	var oauth2Client = req.session.oauth2Client;
+	console.log('b')
+	console.log(oauth2Client);
+	oauth2Client.getToken(req.query.code, function(err, tokens) {
+		console.log('c')
+		if (err) return next(err);
+		oauth2Client.setCredentials(tokens);
+		res.redirect('/');
+	});
 });

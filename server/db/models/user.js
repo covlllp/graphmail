@@ -22,7 +22,9 @@ var schema = new mongoose.Schema({
         id: String
     },
     google: {
-        id: String
+        id: String,
+        accessToken: String,
+        refreshToken: String
     },
     firstName: { type: String},
     lastName: { type: String},
