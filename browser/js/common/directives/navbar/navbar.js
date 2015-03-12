@@ -1,5 +1,5 @@
 'use strict';
-app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) {
+app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, $window) {
 
     return {
         restrict: 'E',
@@ -26,6 +26,10 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
 
             var removeUser = function () {
                 scope.user = null;
+            };
+
+            scope.logInWith = function(provider){
+              $window.location.href="/auth/"+provider;
             };
 
             setUser();
