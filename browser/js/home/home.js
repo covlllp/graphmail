@@ -15,18 +15,11 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails){
-  $scope.emails = [];
 
-  emails.forEach(function(email) {
-    var headers = email.payload.headers;
-    if (headers[1] && headers[1].name === 'Received') {
-      var val = headers[1].value;
-      var date = val.split(';')[1].trim(); // ex. Tue, 3 Mar 2015 18:09:26 -0800 (PST)
-      date = Date.parse(date);
-      $scope.emails.push({ x:date, y:email.sizeEstimate});
-    }
-  })
+app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails, ChartFactory){
+  $scope.emails = emails;
+  $scope.chart = ChartFactory.chart;
+  $scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
 
     
   $scope.user = user;
