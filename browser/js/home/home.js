@@ -7,26 +7,23 @@ app.config(function ($stateProvider) {
         resolve: {
           user: function(AuthService) {
             return AuthService.getLoggedInUser();
-          // },
-          // emails: function($q, Email, user) {
-          //   return user ? Email.query().$promise : $q.when([]);
           }
         }
     });
 });
 
-app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Email, ChartFactory){
+app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Email, ChartFactory, FilterFactory){
   if (user) {
     $scope.showLoading = true;
     Email.query().$promise.then(function(emails) {
-      $scope.emails = emails;
+      FilterFactory.data.emails = emails;
+      FilterFactory.resetEmails();
+      $scope.emails = FilterFactory.data.chartEmails;
       $scope.showLoading = false;
     });
   } else $scope.emails = [];
 
   $scope.chart = ChartFactory.chart;
-  $scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
-    
   $scope.user = user;
 
   $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
