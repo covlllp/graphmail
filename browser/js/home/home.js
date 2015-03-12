@@ -7,29 +7,25 @@ app.config(function ($stateProvider) {
         resolve: {
           user: function(AuthService) {
             return AuthService.getLoggedInUser();
-          },
-          emails: function($q, Email, user) {
-            return user ? Email.query().$promise : $q.when([]);
+          // },
+          // emails: function($q, Email, user) {
+          //   return user ? Email.query().$promise : $q.when([]);
           }
         }
     });
 });
 
-app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails, ChartFactory){
-  $scope.emails = emails;
+app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Email, ChartFactory){
+  if (user) {
+    $scope.showLoading = true;
+    Email.query().$promise.then(function(emails) {
+      $scope.emails = emails;
+      $scope.showLoading = false;
+    });
+  } else $scope.emails = [];
+
   $scope.chart = ChartFactory.chart;
   $scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
-
-  // emails.forEach(function(email) {
-  //   if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {
-  //     var val = email.payload.headers[1].value;
-  //     var date = val.split(';')[1].trim(); // ex. Tue, 3 Mar 2015 18:09:26 -0800 (PST)
-  //     date = Date.parse(date);
-  //     $scope.emails.sizes.push(email.sizeEstimate);
-  //     $scope.emails.dates.push(date);
-  //   }
-  // });
-
     
   $scope.user = user;
 
