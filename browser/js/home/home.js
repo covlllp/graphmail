@@ -16,9 +16,20 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails){
-  $scope.emails = emails;
+  $scope.emails = { sizes: [], dates: []};
+
+  emails.forEach(function(email) {
+    if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {
+      var val = email.payload.headers[1].value;
+      var date = val.split(';')[1].trim(); // ex. Tue, 3 Mar 2015 18:09:26 -0800 (PST)
+      date = Date.parse(date);
+      $scope.emails.sizes.push(email.sizeEstimate);
+      $scope.emails.dates.push(date);
+    }
+  })
+
+    
   $scope.user = user;
-  console.log($scope.emails);
 
   $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
     $scope.user = null;
