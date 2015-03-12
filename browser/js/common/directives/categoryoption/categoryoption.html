@@ -5,19 +5,18 @@
 		<th>Y</th>
 		<th>Z</th>
 	</tr>
-	<tr ng-repeat="option in options">
+	<tr ng-repeat="option in categoryOptions">
 		<td>{{ option }}</td>
-		<td ng-repeat="i in catRadioOptions">
+		<td ng-repeat="i in radioOptions">
 			<div class="radio">
 				<label>
 					<input type="radio"
 						name="{{ option }}"
 						value="{{ option }}"
 						ng-model="selected[i]"
-						ng-click="updateCatOptions(option, i)">
+						ng-click="updateChart()">
 				</label>
 			</div>
 		</td>
 	</tr>
-	{{ selected	 }}
 </table>

@@ -2,20 +2,21 @@ app.directive('categoryOptions', function(ChartFactory) {
 	return {
 		restrict: 'E',
 		templateUrl: 'js/common/directives/categoryoption/categoryoption.html',
-		scope: {
-			options: '='
-		},
 		link: function($scope, elem, attr) {
-			$scope.catRadioOptions = Object.keys(ChartFactory.chart);
-			$scope.selected = {};
-			$scope.catRadioOptions.forEach(function(key) {
-				$scope.selected[key] = {};
-			});
+			$scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
+			$scope.radioOptions = Object.keys(ChartFactory.chart);
+			$scope.selected = $scope.radioOptions.reduce(function(prev, cur) {
+				prev[cur] = null;
+				return prev;
+			}, {});
 
-			$scope.radioClick = function(option, i) {
-				for (var key in $scope.selected[option]) {
-					$scope.selected[option][key] = false;
-				}
+			$scope.updateChart = function() {
+				console.log($scope.selected);
+				$scope.radioOptions.forEach(function(key) {
+					var functionName = $scope.selected[key];
+					if (functionName)
+						ChartFactory.chart[key] = ChartFactory.categoryFunctions[functionName]($scope.emails);
+				});
 			};
 		}
 	};
