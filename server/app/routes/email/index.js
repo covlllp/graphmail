@@ -38,7 +38,7 @@ var userEmail = 'colinvanlang@gmail.com';
 // 	getEmails(oauth2Client, null, resolve);
 // });
 
-router.get('/', function(res, req, send) {
+router.get('/', function(req, res, send) {
 	emailLimit = 10000;
 	emailIds = [];
 	emails = [];
