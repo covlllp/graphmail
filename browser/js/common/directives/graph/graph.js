@@ -10,7 +10,7 @@ app.directive('graph', function(){
     var data = scope.data;  
     var el = element[0];
    
-    var xRange = d3.scale().linear().range([0, width]).domain([
+    var xRange = d3.scale.linear().range([0, width]).domain([
                     d3.min(data, function(d) {
                       return d.x;
                     }),

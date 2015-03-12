@@ -2,7 +2,8 @@
 var app = angular.module('GraphMailApp', [
   'ui.router', 
   'fsaPreBuilt',
-  'ngResource'
+  'ngResource',
+  'nvd3ChartDirectives'
 ]);
 
 app.config(function ($urlRouterProvider, $locationProvider) {
