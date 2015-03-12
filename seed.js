@@ -11,7 +11,7 @@ mongoose.connect('mongodb://localhost:27017/graphmail');
 require('./server/db/models/email');
 var Email = mongoose.model('Email');
 
-var emailLimit = 10000;
+var emailLimit = 1000;
 var userEmail = 'colinvanlang@gmail.com';
 var emailIds = [];
 
@@ -31,8 +31,8 @@ var rl = readline.createInterface({
 function getAccessToken(oauth2Client, callback) { // Code from Google
   // generate consent page url
   var url = oauth2Client.generateAuthUrl({
-    access_type: 'offline', // will return a refresh token
-    scope: 'https://www.googleapis.com/auth/gmail.readonly' // can be a space-delimited string or an array of scopes
+    access_type: 'offline',
+    scope: 'https://www.googleapis.com/auth/gmail.readonly'
   });
 
   console.log('Visit the url: ', url);
@@ -48,7 +48,7 @@ function getAccessToken(oauth2Client, callback) { // Code from Google
 }
 
 var getEmails = function(oauth2Client, pageToken, callback) {
-	console.log('called');
+	console.log('...fetching next 100 emails');
 	Gmail.users.messages.list({
 		userId: userEmail,
 		pageToken: pageToken,
@@ -57,7 +57,7 @@ var getEmails = function(oauth2Client, pageToken, callback) {
 		emailIds = emailIds.concat(res.messages.map(function(message) {
 			return message.id;
 		}));
-		emailLimit -= res.resultSizeEstimate;
+		emailLimit -= res.messages.length;
 		if (emailLimit > 0) {
 			getEmails(oauth2Client, res.nextPageToken, callback);
 		} else (callback());
