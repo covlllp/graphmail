@@ -1,5 +1,9 @@
 'use strict';
-var app = angular.module('GraphMailApp', ['ui.router', 'fsaPreBuilt']);
+var app = angular.module('GraphMailApp', [
+  'ui.router', 
+  'fsaPreBuilt',
+  'ngResource'
+]);
 
 app.config(function ($urlRouterProvider, $locationProvider) {
     // This turns off hashbang urls (/#about) and changes it to something normal (/about)
