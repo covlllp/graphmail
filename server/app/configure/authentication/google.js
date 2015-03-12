@@ -4,6 +4,7 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var mongoose = require('mongoose');
 var UserModel = mongoose.model('User');
+var google = require('googleapis');
 
 module.exports = function (app) {
 
@@ -24,9 +25,10 @@ module.exports = function (app) {
             if (user) {
                 done(null, user);
             } else {
+                console.log(profile);
                 UserModel.create({
                     google: {
-                        id: profile.id
+                        id: profile.id,
                     },
                     email: profile._json.email,
                     firstName : profile._json.given_name,
@@ -47,16 +49,24 @@ module.exports = function (app) {
     passport.use(new GoogleStrategy(googleCredentials, verifyCallback));
 
     app.get('/auth/google', passport.authenticate('google', {
+        access_type: 'offline',
         scope: [
             'https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/userinfo.email'
+            'https://www.googleapis.com/auth/userinfo.email',
         ]
     }));
 
     app.get('/auth/google/callback',
         passport.authenticate('google', { failureRedirect: '/login' }),
         function (req, res) {
-            res.redirect('/');
+            var Google = require('googleapis');
+            var OAuth2 = Google.auth.OAuth2;
+            var oauth2Client = require('./../../../env/googleOauthClient');
+            var url = oauth2Client.generateAuthUrl({
+                scope: 'https://www.googleapis.com/auth/gmail.readonly'
+            });
+            res.redirect(url);
+            // res.redirect('/');
         });
 
 };

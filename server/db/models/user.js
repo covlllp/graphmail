@@ -22,7 +22,7 @@ var schema = new mongoose.Schema({
         id: String
     },
     google: {
-        id: String
+        id: String,
     },
     firstName: { type: String},
     lastName: { type: String},
