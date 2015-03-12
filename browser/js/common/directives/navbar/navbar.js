@@ -29,7 +29,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
             };
 
             scope.logInWith = function(provider){
-              $window.location.href="/auth/"+provider;
+              $window.location.href = '/auth/' + provider;
             };
 
             setUser();

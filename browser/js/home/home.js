@@ -16,15 +16,15 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails){
-  $scope.emails = { sizes: [], dates: []};
+  $scope.emails = [];
 
   emails.forEach(function(email) {
-    if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {
-      var val = email.payload.headers[1].value;
+    var headers = email.payload.headers;
+    if (headers[1] && headers[1].name === 'Received') {
+      var val = headers[1].value;
       var date = val.split(';')[1].trim(); // ex. Tue, 3 Mar 2015 18:09:26 -0800 (PST)
       date = Date.parse(date);
-      $scope.emails.sizes.push(email.sizeEstimate);
-      $scope.emails.dates.push(date);
+      $scope.emails.push({ x:date, y:email.sizeEstimate});
     }
   })
 
