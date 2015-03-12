@@ -70,10 +70,9 @@ mongoose.connection.on('open', function() {
 		console.log('Signing into Google');
 		getAccessToken(oauth2Client, function() {
 			console.log('Getting email IDs');
-			var promise = new Promise(function(resolve, reject) {
+			(new Promise(function(resolve, reject) {
 				getEmails(oauth2Client, null, resolve);
-			});
-			promise.then(function() {
+			})).then(function() {
 				console.log('Number of emails: ', emailIds.length);
 				console.log('Populating emails and saving to database');
 				async.each(emailIds, function(emailId, done) {
