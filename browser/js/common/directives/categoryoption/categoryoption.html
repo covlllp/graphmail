@@ -1,0 +1,23 @@
+<table class="table table-striped table-condensed">
+	<tr>
+		<th></th>
+		<th>X</th>
+		<th>Y</th>
+		<th>Z</th>
+	</tr>
+	<tr ng-repeat="option in options">
+		<td>{{ option }}</td>
+		<td ng-repeat="i in catRadioOptions">
+			<div class="radio">
+				<label>
+					<input type="radio"
+						name="{{ option }}"
+						value="{{ option }}"
+						ng-model="selected[i]"
+						ng-click="updateCatOptions(option, i)">
+				</label>
+			</div>
+		</td>
+	</tr>
+	{{ selected	 }}
+</table>

@@ -15,8 +15,15 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails){
+app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails, ChartFactory){
   $scope.emails = { sizes: [], dates: []};
+  $scope.chart = ChartFactory.chart;
+  $scope.categoryOptions = [
+  	'Email Size',
+  	'Email Date',
+  	'Email a',
+  	'Email b'
+  ];
 
   emails.forEach(function(email) {
     if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {
@@ -26,7 +33,7 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emai
       $scope.emails.sizes.push(email.sizeEstimate);
       $scope.emails.dates.push(date);
     }
-  })
+  });
 
     
   $scope.user = user;
