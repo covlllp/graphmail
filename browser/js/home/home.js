@@ -8,13 +8,19 @@ app.config(function ($stateProvider) {
           user: function(AuthService) {
             return AuthService.getLoggedInUser();
           },
-          emails: function(Email, user) {
+          emails: function($q, Email, user) {
             return user ? Email.query().$promise : $q.when([]);
           }
         }
     });
 });
 
-app.controller('HomeCtrl', function ($scope, emails){
+app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails){
   $scope.emails = emails;
+  $scope.user = user;
+
+  console.log(user)
+  $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
+    $scope.user = null;
+  })
 });
