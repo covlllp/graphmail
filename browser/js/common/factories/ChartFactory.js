@@ -51,7 +51,7 @@ app.factory('ChartFactory', function(FilterFactory) {
 
   factory.getD3ChartObj = function() {
     var arr = [];
-    for (var i = 0; i < factory.chart.xAxislength; i++) {
+    for (var i = 0; i < factory.chart.xAxis.length; i++) {
       arr.push(new ChartObj(factory.chart.xAxis[i],
                   factory.chart.yAxis[i],
                   factory.chart.size[i]));
