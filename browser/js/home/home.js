@@ -24,8 +24,6 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Emai
   } else $scope.emails = [];
 
   $scope.chart = ChartFactory.chart;
-  $scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
-    
   $scope.user = user;
 
   $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {

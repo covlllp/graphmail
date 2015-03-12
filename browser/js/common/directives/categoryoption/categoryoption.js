@@ -9,11 +9,6 @@ app.directive('categoryOptions', function(ChartFactory) {
 
 			$scope.updateChart = function() {
 				ChartFactory.updateChart();
-				// $scope.radioOptions.forEach(function(key) {
-				// 	var functionName = $scope.selected[key];
-				// 	if (functionName)
-				// 		ChartFactory.chart[key] = ChartFactory.categoryFunctions[functionName]($scope.emails);
-				// });
 			};
 		}
 	};
