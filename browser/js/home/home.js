@@ -18,7 +18,6 @@ app.config(function ($stateProvider) {
 app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails){
   $scope.emails = emails;
   $scope.user = user;
-  console.log($scope.emails);
 
   $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
     $scope.user = null;
