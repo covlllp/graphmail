@@ -4,7 +4,7 @@ app.factory('ChartFactory', function() {
 	var ChartObj = function(x, y, z) {
 		this.x = x;
 		this.y = y;
-		this.size = 10;
+		this.z = z;
 	};
 
 	factory.chart = {
@@ -35,7 +35,7 @@ app.factory('ChartFactory', function() {
 
 	factory.getD3ChartObj = function() {
 		var arr = [];
-		for (var i = 0; i < factory.chart.xAxis.length; i++) {
+		for (var i = 0; i < factory.chart.xAxis; i++) {
 			arr.push(new ChartObj(factory.chart.xAxis[i],
 								  factory.chart.yAxis[i],
 								  factory.chart.size[i]));

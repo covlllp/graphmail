@@ -7,18 +7,25 @@ app.config(function ($stateProvider) {
         resolve: {
           user: function(AuthService) {
             return AuthService.getLoggedInUser();
-          },
-          emails: function($q, Email, user) {
-            return user ? Email.query().$promise : $q.when([]);
           }
         }
     });
 });
 
+app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Email, ChartFactory, FilterFactory){
+  if (user) {
+    $scope.showLoading = true;
+    Email.query().$promise.then(function(emails) {
+      FilterFactory.data.emails = emails;
+      FilterFactory.resetEmails();
+      $scope.emails = FilterFactory.data.chartEmails;
+      $scope.showLoading = false;
+    });
+  } else $scope.emails = [];
 
-app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails, ChartFactory){
-  $scope.emails = emails;
   $scope.chart = ChartFactory.chart;
+  $scope.user = user;
+
 
   $scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
 
@@ -28,9 +35,7 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emai
 
   }];
 
-  $scope.exampleData[0].values = $scope.exampleData[0].values.map(function(obj) {
-    return { x: obj.x*10, y: obj.y*10, size: obj.size*10}
-  })
+  
 
   $scope.xAxisTickFormatFunction = function() {
     return ;
@@ -39,16 +44,19 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emai
     return ;
   }
 
+
   $scope.$watchCollection('chart', function() {
 
-    console.log(ChartFactory.getD3ChartObj())
-    $scope.exampleData[0].values = ChartFactory.getD3ChartObj();
-    console.log($scope.exampleData[0].values)
+    
+      $scope.exampleData = [{
+          "key":"Group 0",
+          "values": ChartFactory.getD3ChartObj()
+        }];
+      console.log($scope.exampleData[0].values)
+       
+    // console.log($scope.exampleData[0].values)
   })
 
-  console.log(ChartFactory.getD3ChartObj())
-    
-  $scope.user = user;
 
   $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
     $scope.user = null;

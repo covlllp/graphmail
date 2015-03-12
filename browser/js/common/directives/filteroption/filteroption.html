@@ -1,0 +1,19 @@
+<table class="table table-striped table-condensed">
+	<tr>
+		<th></th>
+		<th>Filter</th>
+	</tr>
+	<tr ng-repeat="option in options">
+		<td>{{ option }}</td>
+		<td>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox"
+						name="{{ option }}"
+						ng-model="selectedFilters[option]"
+						ng-click="filterEmails()">
+				</label>
+			</div>
+		</td>
+	</tr>
+</table>

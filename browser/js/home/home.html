@@ -5,24 +5,29 @@
     <p></p>
     <!-- </div> -->
   </div>
+  <div class="text-center" ng-show="showLoading"><loadwheel></loadwheel></div>
 
 
 
 
-
-  <div class="row" ng-show="user">
+  <div class="row" ng-show="user && !showLoading">
     <div class="col-sm-3">
       <div class="col-xs-12">
       	<div class="panel panel-success">
       		<div class="panel-heading">Categories</div>
-          <category-options options="categoryOptions">
-          </category-option>
+          <category-options></category-option>
       	</div>
       </div>
       <div class="col-xs-12">
+        <div class="panel panel-success">
+          <div class="panel-heading">Types</div>
+          <div class="panel-body">Hello</div>
+        </div>
+      </div>
+      <div class="col-xs-12">
       	<div class="panel panel-success">
-      		<div class="panel-heading">Filters</div>
-      		<div class="panel-body">Hello</div>
+          <div class="panel-heading">Filters</div>
+          <filter-options></filter-options>
       	</div>
       </div>
     </div>
