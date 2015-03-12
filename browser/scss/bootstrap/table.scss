@@ -1,0 +1,13 @@
+.table-condensed {
+	> tbody > tr > td {
+		padding: 0;
+		padding-left: 4px;
+		vertical-align: middle;
+	}
+
+	tr {
+		td:first-child {
+			padding-left: 10px;
+		}
+	}
+}

@@ -15,18 +15,20 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails){
-  $scope.emails = { sizes: [], dates: []};
+app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, emails, ChartFactory){
+  $scope.emails = emails;
+  $scope.chart = ChartFactory.chart;
+  $scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
 
-  emails.forEach(function(email) {
-    if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {
-      var val = email.payload.headers[1].value;
-      var date = val.split(';')[1].trim(); // ex. Tue, 3 Mar 2015 18:09:26 -0800 (PST)
-      date = Date.parse(date);
-      $scope.emails.sizes.push(email.sizeEstimate);
-      $scope.emails.dates.push(date);
-    }
-  })
+  // emails.forEach(function(email) {
+  //   if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {
+  //     var val = email.payload.headers[1].value;
+  //     var date = val.split(';')[1].trim(); // ex. Tue, 3 Mar 2015 18:09:26 -0800 (PST)
+  //     date = Date.parse(date);
+  //     $scope.emails.sizes.push(email.sizeEstimate);
+  //     $scope.emails.dates.push(date);
+  //   }
+  // });
 
     
   $scope.user = user;
