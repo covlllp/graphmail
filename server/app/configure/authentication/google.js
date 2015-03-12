@@ -49,6 +49,7 @@ module.exports = function (app) {
     passport.use(new GoogleStrategy(googleCredentials, verifyCallback));
 
     app.get('/auth/google', passport.authenticate('google', {
+        access_type: 'offline',
         scope: [
             'https://www.googleapis.com/auth/userinfo.profile',
             'https://www.googleapis.com/auth/userinfo.email',
@@ -60,13 +61,10 @@ module.exports = function (app) {
         function (req, res) {
             var Google = require('googleapis');
             var OAuth2 = Google.auth.OAuth2;
-            var oauth2Client = new OAuth2(googleConfig.gmailClientID,
-                                        googleConfig.gmailClientSecret,
-                                        googleConfig.gmailCallbackURL);
+            var oauth2Client = require('./../../../env/googleOauthClient');
             var url = oauth2Client.generateAuthUrl({
                 scope: 'https://www.googleapis.com/auth/gmail.readonly'
             });
-            req.session.oauth2Client = oauth2Client;
             res.redirect(url);
             // res.redirect('/');
         });

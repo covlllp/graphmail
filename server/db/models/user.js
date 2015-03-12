@@ -23,8 +23,6 @@ var schema = new mongoose.Schema({
     },
     google: {
         id: String,
-        accessToken: String,
-        refreshToken: String
     },
     firstName: { type: String},
     lastName: { type: String},
