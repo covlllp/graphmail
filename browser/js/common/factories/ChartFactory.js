@@ -1,47 +1,63 @@
-app.factory('ChartFactory', function() {
-	var factory = {};
+app.factory('ChartFactory', function(FilterFactory) {
+  var factory = {};
 
-	var ChartObj = function(x, y, z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	};
+  var ChartObj = function(x, y, z) {
+    this.x = x;
+    this.y = y;
+    this.size = z || 10;
+  };
 
-	factory.chart = {
-		xAxis: [],
-		yAxis: [],
-		size: []
-	};
+  factory.chart = {
+    xAxis: [],
+    yAxis: [],
+    size: []
+  };
 
-	var getEmailSizes = function(emails) {
-		return emails.map(function(email) {
-			return email.sizeEstimate;
-		});
-	};
+  factory.categoryOptions = {
+    xAxis: '',
+    yAxis: '',
+    size: ''
+  };
 
-	var getEmailDates = function(emails) {
-		return emails.map(function(email) {
-			if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {
-				var val = email.payload.headers[1].value;
-				return Date.parse(val.split(';')[1].trim()); // ex. Tue, 3 Mar 2015 18:09:26 -0800 (PST)
-			}
-		});
-	};
+  var getEmailSizes = function(emails) {
+    return emails.map(function(email) {
+      return email.sizeEstimate;
+    });
+  };
 
-	factory.categoryFunctions = {
-		'Email Size': getEmailSizes,
-		'Email Dates': getEmailDates
-	};
+  var getEmailDates = function(emails) {
+    return emails.map(function(email) {
+      if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {
+        var val = email.payload.headers[1].value;
+        return Date.parse(val.split(';')[1].trim());
+        // ex. Tue, 3 Mar 2015 18:09:26 -0800 (PST)
+      }
+    });
+  };
 
-	factory.getD3ChartObj = function() {
-		var arr = [];
-		for (var i = 0; i < factory.chart.xAxis; i++) {
-			arr.push(new ChartObj(factory.chart.xAxis[i],
-								  factory.chart.yAxis[i],
-								  factory.chart.size[i]));
-		}
-		return arr;
-	};
+  factory.categoryFunctions = {
+    'Email Size': getEmailSizes,
+    'Email Dates': getEmailDates
+  };
 
-	return factory;
+  factory.updateChart = function() {
+    Object.keys(factory.chart).forEach(function(key) {
+      var functionName = factory.categoryOptions[key];
+      if (functionName)
+        factory.chart[key]
+        = factory.categoryFunctions[functionName](FilterFactory.data.chartEmails);
+    });
+  };
+
+  factory.getD3ChartObj = function() {
+    var arr = [];
+    for (var i = 0; i < factory.chart.xAxislength; i++) {
+      arr.push(new ChartObj(factory.chart.xAxis[i],
+                  factory.chart.yAxis[i],
+                  factory.chart.size[i]));
+    }
+    return {values: arr, key: 'Hello'};
+  };
+
+  return factory;
 });
