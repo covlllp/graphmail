@@ -1,4 +1,4 @@
-app.directive('slider', function(TimeFactory, FilterFactory) {
+app.directive('slider', function(TimeFactory, FilterFactory, TypeFactory, ChartFactory) {
   return {
     restrict: 'AE',
     templateUrl: 'js/common/directives/slider/slider.html',
@@ -37,7 +37,9 @@ app.directive('slider', function(TimeFactory, FilterFactory) {
           
           TimeFactory.storeConstraints(min, max);
           TimeFactory.filterEmails();
-          
+          TypeFactory.splitEmails();
+          ChartFactory.updateChart();
+ 
         }
       })
 
