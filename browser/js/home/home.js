@@ -25,6 +25,7 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Emai
       TypeFactory.splitEmails();
       $scope.emails = FilterFactory.data.chartEmails;
       $scope.showLoading = false;
+      console.log(FilterFactory.hash);
     });
   } else $scope.emails = [];
 
