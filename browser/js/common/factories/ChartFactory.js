@@ -1,7 +1,8 @@
 app.factory('ChartFactory', function(
   TypeFactory,
   catEmailSizes,
-  catEmailDates
+  catEmailDates,
+  catThreadLength
 ) {
   var factory = {};
 
@@ -23,7 +24,8 @@ app.factory('ChartFactory', function(
 
   factory.categoryFunctions = {
     'Email Size': catEmailSizes,
-    'Email Dates': catEmailDates
+    'Email Dates': catEmailDates,
+    'Thread Length': catThreadLength
   };
 
   factory.updateChart = function() {

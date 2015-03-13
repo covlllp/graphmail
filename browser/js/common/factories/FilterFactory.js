@@ -11,6 +11,12 @@ app.factory('FilterFactory', function(
 		chartEmails: []
 	};
 
+	factory.hash = {
+		emails: {},
+		threads: {},
+		labels: {}
+	};
+
 	factory.filterFunctions = {
 		'Hide Hangouts': filterHangouts(false),
 		'Only Hangouts': filterHangouts(true),
@@ -29,6 +35,15 @@ app.factory('FilterFactory', function(
 				factory.data.chartEmails
 					= factory.filterFunctions[key](factory.data.chartEmails);
 			}
+		}
+	};
+
+	factory.populateHashes = function() {
+		for (var key in factory.hash) {
+			console.log(factory.data);
+			factory.data[key].forEach(function(obj) {
+				factory.hash[key][obj.id] = obj;
+			});
 		}
 	};
 
