@@ -7,7 +7,7 @@ app.factory('filterTime', function() {
           var date = Date.parse(val.split(';')[1].trim());
           return date > min && date < max;
         //}
-        //return true;    
+        // return true;    
       });
     };
   };

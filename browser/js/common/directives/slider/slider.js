@@ -6,56 +6,23 @@ app.directive('slider', function(TimeFactory, FilterFactory, TypeFactory, ChartF
       sliderStyle: '='
     },
     link: function(scope, element, attrs) {
-
-      var min, max;
-      min = max = Date.now();
-     
-      function getMinMax(){
-        FilterFactory.data.chartEmails.forEach(function(email) {
-          if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {
-            var val = email.payload.headers[1].value;
-            var date = Date.parse(val.split(';')[1].trim());
-            if (date < min) min = date;
-          }
-
-          scope.constraints = {
-            min: min,
-            max: max,
-            modelMin: min,
-            modelMax: max
-          };
-
-          TimeFactory.storeConstraints(min, max);
-        })
-      }
+      scope.constraints = TimeFactory.constraints;
       
       scope.$watchCollection('constraints', function(newVal, oldVal) {  
-        console.log(newVal, oldVal)
-        if(newVal) { 
-          var min = newVal.modelMin, max = newVal.modelMax;    
-
-          TimeFactory.storeEmails(FilterFactory.data.chartEmails);
-          TimeFactory.storeConstraints(min, max);
+        if(newVal) {
+          TimeFactory.storeConstraints(newVal.min, newVal.max);
           TimeFactory.filterEmails();
           TypeFactory.splitEmails();
           ChartFactory.updateChart();
- 
         }
-      })
-
-
-      
-
+      });
 
       scope.$watch('sliderStyle', function(newVal, oldValue) {
-
         if (newVal === 'Cummulative') {
-          if (scope.constraints) scope.constraints.modelMin = min;
+          if (scope.constraints) scope.constraints.min = scope.constraints.allmin;
         }
-
-        getMinMax();
-
-      })
+        TimeFactory.resetMinMax();
+      });
     }
-  }
-})
+  };
+});
