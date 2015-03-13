@@ -6,6 +6,8 @@ app.factory('FilterFactory', function(
 
 	factory.data = {
 		emails: [],
+		threads: [],
+		labels: [],
 		chartEmails: []
 	};
 

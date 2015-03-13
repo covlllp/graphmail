@@ -9,72 +9,107 @@ var oauth2Client = require('./../../../env/googleOauthClient');
 
 var mongoose = require('mongoose');
 var Email = mongoose.model('Email');
+var Thread = mongoose.model('Thread');
+var Label = mongoose.model('Label');
 
 module.exports = router;
 
 
 
 router.get('/', function(req, res, next) {
+	var emails = [], threads = [], labels = [];
+
 	var getEmailsFromGoogle = function(emailLimit) {
 		var userEmail = req.user.email;
-		var emailIds = [];
-		var emails = [];
 
-		var getEmails = function(oauth2Client, pageToken, callback) {
-			console.log('...fetching emails');
-			Gmail.users.messages.list({
+		var getThreads = function(oauth2Client, pageToken, callback) {
+			console.log('...Fetching 100 Threads');
+			Gmail.users.threads.list({
 				userId: userEmail,
 				pageToken: pageToken,
 				auth: oauth2Client
-			}, function(err, response) {
-				emailIds = emailIds.concat(response.messages.map(function(message) {
-					return message.id;
-				}));
-				emailLimit -= response.messages.length;
-				if (emailLimit > 0) {
-					getEmails(oauth2Client, response.nextPageToken, callback);
-				} else (callback());
-			});
-		};
-		console.log('in the function');
-
-		return new Promise(function(resolve, reject) {
-			(new Promise(function(resolve, reject) {
-				getEmails(oauth2Client, null, resolve);
-			})).then(function() {
-				console.log('populating email IDs');
-				async.each(emailIds, function(emailId, done) {
-					Gmail.users.messages.get({
+			}, function(err, threadsObj) {
+				console.log('Saving fetched emails and threads to database');
+				async.each(threadsObj.threads, function(thread, done) {
+					Gmail.users.threads.get({
 						userId: userEmail,
-						id: emailId,
+						id: thread.id,
+						pageToken: pageToken,
 						auth: oauth2Client
-					}, function(err, message) {
-						if (err) console.log(err);
-						emails.push(message);
-						done();
+					}, function(err, threadObj) {
+						if (!threadObj.messages[0].payload.headers[1]) done();
+						else {
+							var messages = threadObj.messages.map(function(email) {
+								emails.push(email);
+								return email.id;
+							});
+							threads.push({id: thread.id, messages: messages});
+							emailLimit -= threadObj.messages.length;
+							done();
+						}
 					});
 				}, function() {
-					console.log('Population done');
-					resolve(emails);
+					console.log('Finished populating 100 Threads');
+					if (emailLimit > 0) {
+						getThreads(oauth2Client, threadsObj.nextPageToken, callback);
+					} else callback();
 				});
 			});
+		};
+
+		return new Promise(function(resolve, reject) {
+			getThreads(oauth2Client, null, resolve);
 		});
 	};
 
-	var emailLimit = 1000;
 	if (process.env.NODE_ENV === 'production') {
+		var emailLimit = 1000;
+		emails = []; threads = []; labels = [];
 		getEmailsFromGoogle(emailLimit)
-		.then(function(emails) {
-			res.json(emails);
+		.then(function(data) {
+			var userEmail = req.user.email;
+			console.log('Fetching Labels');
+			Gmail.users.labels.list({
+				userId: userEmail,
+				auth: oauth2Client
+			}, function(err, labelsObj) {
+				async.each(labelsObj.labels, function(label, done) {
+					labels.push(label);
+					done();
+				}, function() {
+					console.log('Labels fetched');
+					var rtnObj = {
+						emails: emails,
+						threads: threads,
+						labels: labels
+					};
+					res.json(rtnObj);
+				});
+			});
 		});
 		
 	} else {
 		Email.find().exec().then(function(modelEmails) {
-			modelEmails = modelEmails.map(function(emailObj) {
+			emails = modelEmails.map(function(emailObj) {
 				return emailObj.email;
 			});
 			console.log('Emails fetched');
-			res.json(modelEmails);
+			return Thread.find().exec();
+		}).then(function(modelThreads) {
+			threads = modelThreads;
+			console.log('Threads fetched');
+			return Label.find().exec();
+		}).then(function(modelLabels) {
+			labels = modelLabels.map(function(labelObj) {
+				return labelObj.label;
+			});
+			console.log('Labels fetched');
+			var rtnObj = {
+				emails: emails,
+				threads: threads,
+				labels: labels
+			};
+			res.json(rtnObj);
 		});
 	}
 });
