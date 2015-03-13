@@ -9,6 +9,8 @@ var oauth2Client = require('./../../../env/googleOauthClient');
 
 var mongoose = require('mongoose');
 var Email = mongoose.model('Email');
+var Thread = mongoose.model('Thread');
+var Label = mongoose.model('Label');
 
 module.exports = router;
 
@@ -36,7 +38,6 @@ router.get('/', function(req, res, next) {
 				} else (callback());
 			});
 		};
-		console.log('in the function');
 
 		return new Promise(function(resolve, reject) {
 			(new Promise(function(resolve, reject) {
@@ -61,20 +62,35 @@ router.get('/', function(req, res, next) {
 		});
 	};
 
-	var emailLimit = 1000;
 	if (process.env.NODE_ENV === 'production') {
+		var emailLimit = 1000;
 		getEmailsFromGoogle(emailLimit)
 		.then(function(emails) {
 			res.json(emails);
 		});
 		
 	} else {
+		var emails, threads, labels;
 		Email.find().exec().then(function(modelEmails) {
-			modelEmails = modelEmails.map(function(emailObj) {
+			emails = modelEmails.map(function(emailObj) {
 				return emailObj.email;
 			});
 			console.log('Emails fetched');
-			res.json(modelEmails);
+			return Thread.find().exec();
+		}).then(function(modelThreads) {
+			threads = modelThreads;
+			console.log('Threads fetched');
+			return Label.find().exec();
+		}).then(function(modelLabels) {
+			labels = modelLabels.map(function(labelObj) {
+				return labelObj.label;
+			});
+			console.log('Labels fetched');
+			res.json({
+				emails: emails,
+				threads: threads,
+				labels: labels
+			});
 		});
 	}
 });
