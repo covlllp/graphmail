@@ -1,5 +1,6 @@
 app.factory('FilterFactory', function(
-	filterHangouts
+	filterHangouts,
+	filterAttachments
 ) {
 	var factory = {};
 
@@ -10,7 +11,9 @@ app.factory('FilterFactory', function(
 
 	factory.filterFunctions = {
 		'Hide Hangouts': filterHangouts(false),
-		'Only Hangouts': filterHangouts(true)
+		'Only Hangouts': filterHangouts(true),
+		'No Attachments': filterAttachments(false),
+		'Has Attachments': filterAttachments(true)
 	};
 
 	factory.resetEmails = function() {
