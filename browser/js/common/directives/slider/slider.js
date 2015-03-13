@@ -1,4 +1,4 @@
-app.directive('slider', function(FilterFactory, filterTime) {
+app.directive('slider', function(TimeFactory, FilterFactory) {
   return {
     restrict: 'AE',
     templateUrl: 'js/common/directives/slider/slider.html',
@@ -11,13 +11,11 @@ app.directive('slider', function(FilterFactory, filterTime) {
       min = max = Date.now();
      
       function getMinMax(){
-        FilterFactory.data.emails.forEach(function(email) {
+        FilterFactory.data.chartEmails.forEach(function(email) {
           if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {
             var val = email.payload.headers[1].value;
             var date = Date.parse(val.split(';')[1].trim());
-            console.log('date', date)
             if (date < min) min = date;
-            //if (date > max) max = date;
           }
 
           scope.constraints = {
@@ -25,11 +23,23 @@ app.directive('slider', function(FilterFactory, filterTime) {
             max: max,
             modelMin: min,
             modelMax: max
-
           };
+
+          TimeFactory.storeConstraints(min, max);
         })
       }
       
+      scope.$watchCollection('constraints', function(newVal, oldVal) {  
+        console.log(newVal, oldVal)
+        if(newVal) { 
+          var min = newVal.modelMin, max = newVal.modelMax;    
+
+          
+          TimeFactory.storeConstraints(min, max);
+          TimeFactory.filterEmails();
+          
+        }
+      })
 
 
       
