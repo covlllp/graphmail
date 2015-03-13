@@ -28,6 +28,18 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Emai
   $scope.user = user;
 
 
+
+
+
+  $scope.isShowingTime = false;
+  $scope.timeOption = 'Cummulative';
+
+  $scope.d3Chart = {
+    min: 20,
+    max: 80
+  };
+
+
   $scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
 
   $scope.exampleData = [];
@@ -41,14 +53,10 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Emai
     return ;
   };
 
+  
 
-  $scope.$watchCollection('chart', function() {
-
-    
-      $scope.exampleData[0] = ChartFactory.getD3ChartObj();
-      console.log(ChartFactory.chart);
-      console.log(ChartFactory.getD3ChartObj());
-      console.log($scope.exampleData[0].values);
+  $scope.$watchCollection('chart', function() { 
+    $scope.exampleData[0] = ChartFactory.getD3ChartObj();
   });
 
 

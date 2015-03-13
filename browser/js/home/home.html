@@ -32,7 +32,24 @@
       </div>
     </div>
     <div class="col-sm-9 well">
-   
+
+      <div>
+        <label class="checkbox-inline">
+         <input type="checkbox"  ng-model="isShowingTime"> Show time
+       </label>
+
+        <span ng-show="isShowingTime">
+        
+          <label class="radio-inline">
+            <input type="radio" name="timeOption" id="" ng-model="timeOption" value="Cummulative"> Cummulative
+          </label>
+
+          <label class="radio-inline">
+            <input type="radio" name="timeOption" id="" ng-model="timeOption" value="Range"> Range
+          </label>
+        </span>
+      </div>
+
       <nvd3-scatter-chart
             objectequality="true"
             data="exampleData"
@@ -41,6 +58,8 @@
             height="400">
         <svg></svg>
       </nvd3-scatter-chart>
+      
+      <slider slider-style="timeOption" constraints="d3Chart" ng-show="isShowingTime"></slider>
 
     </div>
   </div>
