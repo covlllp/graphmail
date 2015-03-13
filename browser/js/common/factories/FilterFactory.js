@@ -1,6 +1,7 @@
 app.factory('FilterFactory', function(
 	filterHangouts,
-	filterAttachments
+	filterAttachments,
+	filterSendOrReceive
 ) {
 	var factory = {};
 
@@ -18,10 +19,12 @@ app.factory('FilterFactory', function(
 	};
 
 	factory.filterFunctions = {
-		'Hide Hangouts': filterHangouts(false),
-		'Only Hangouts': filterHangouts(true),
+		// 'Hide Hangouts': filterHangouts(false),
+		// 'Only Hangouts': filterHangouts(true),
 		'No Attachments': filterAttachments(false),
-		'Has Attachments': filterAttachments(true)
+		'Has Attachments': filterAttachments(true),
+		'Sent Email': filterSendOrReceive(true),
+		'Received Email': filterSendOrReceive(false)
 	};
 
 	factory.resetEmails = function() {
@@ -40,7 +43,6 @@ app.factory('FilterFactory', function(
 
 	factory.populateHashes = function() {
 		for (var key in factory.hash) {
-			console.log(factory.data);
 			factory.data[key].forEach(function(obj) {
 				factory.hash[key][obj.id] = obj;
 			});
