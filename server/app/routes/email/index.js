@@ -62,7 +62,7 @@ router.get('/', function(req, res, next) {
 		});
 	};
 
-	// if (process.env.NODE_ENV === 'production') {
+	if (process.env.NODE_ENV === 'production') {
 		var emailLimit = 1000;
 		emails = []; threads = []; labels = [];
 		getEmailsFromGoogle(emailLimit)
@@ -88,30 +88,30 @@ router.get('/', function(req, res, next) {
 			});
 		});
 		
-	// } else {
-	// 	Email.find().exec().then(function(modelEmails) {
-	// 		emails = modelEmails.map(function(emailObj) {
-	// 			return emailObj.email;
-	// 		});
-	// 		console.log('Emails fetched');
-	// 		return Thread.find().exec();
-	// 	}).then(function(modelThreads) {
-	// 		threads = modelThreads;
-	// 		console.log('Threads fetched');
-	// 		return Label.find().exec();
-	// 	}).then(function(modelLabels) {
-	// 		labels = modelLabels.map(function(labelObj) {
-	// 			return labelObj.label;
-	// 		});
-	// 		console.log('Labels fetched');
-	// 		var rtnObj = {
-	// 			emails: emails,
-	// 			threads: threads,
-	// 			labels: labels
-	// 		};
-	// 		res.json(rtnObj);
-	// 	});
-	// }
+	} else {
+		Email.find().exec().then(function(modelEmails) {
+			emails = modelEmails.map(function(emailObj) {
+				return emailObj.email;
+			});
+			console.log('Emails fetched');
+			return Thread.find().exec();
+		}).then(function(modelThreads) {
+			threads = modelThreads;
+			console.log('Threads fetched');
+			return Label.find().exec();
+		}).then(function(modelLabels) {
+			labels = modelLabels.map(function(labelObj) {
+				return labelObj.label;
+			});
+			console.log('Labels fetched');
+			var rtnObj = {
+				emails: emails,
+				threads: threads,
+				labels: labels
+			};
+			res.json(rtnObj);
+		});
+	}
 });
 
 router.get('/callback', function(req, res, next) {
