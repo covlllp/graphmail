@@ -31,8 +31,14 @@
       	</div>
       </div>
     </div>
+
     <div class="col-lg-9 col-md-8 col-xs-6 well">
-   
+      
+      <label class="checkbox-inline">
+       <input type="checkbox"  ng-model="isShowingTime"> Show time
+     </label>
+      <time-select ></time-select>
+
       <nvd3-scatter-chart
             data="exampleData"
             id="exampleId"
@@ -41,6 +47,8 @@
             showLegend="true">
         <svg></svg>
       </nvd3-scatter-chart>
+      
+      <slider slider-style="timeOption" constraints="d3Chart" ng-show="isShowingTime"></slider>
 
     </div>
   </div>
