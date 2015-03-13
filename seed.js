@@ -18,8 +18,6 @@ var Label = mongoose.model('Label');
 var goal = 1000;
 var emailLimit = goal;
 var userEmail = process.argv[2];
-var emailIds = [];
-var threads = [];
 
 
 // Authenticating through Google

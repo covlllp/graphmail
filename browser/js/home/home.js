@@ -17,7 +17,6 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Emai
   if (user) {
     $scope.showLoading = true;
     Email.get().$promise.then(function(data) {
-      console.log(data);
       FilterFactory.data.emails = data.emails;
       FilterFactory.data.threads = data.threads;
       FilterFactory.data.labels = data.labels;
