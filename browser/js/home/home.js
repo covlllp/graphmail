@@ -43,12 +43,7 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Emai
 
 
   $scope.$watchCollection('chart', function() {
-
-    
       $scope.exampleData[0] = ChartFactory.getD3ChartObj();
-      console.log(ChartFactory.chart);
-      console.log(ChartFactory.getD3ChartObj());
-      console.log($scope.exampleData[0].values);
   });
 
 
