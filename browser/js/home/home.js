@@ -20,7 +20,7 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Emai
       FilterFactory.data.emails = data.emails;
       FilterFactory.data.threads = data.threads;
       FilterFactory.data.labels = data.labels;
-      FilterFactory.populateHashes;
+      FilterFactory.populateHashes();
       FilterFactory.resetEmails();
       TypeFactory.splitEmails();
       $scope.emails = FilterFactory.data.chartEmails;

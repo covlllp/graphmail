@@ -13,7 +13,7 @@ app.factory('FilterFactory', function(
 
 	factory.hash = {
 		emails: {},
-		thread: {},
+		threads: {},
 		labels: {}
 	};
 
@@ -40,6 +40,7 @@ app.factory('FilterFactory', function(
 
 	factory.populateHashes = function() {
 		for (var key in factory.hash) {
+			console.log(factory.data);
 			factory.data[key].forEach(function(obj) {
 				factory.hash[key][obj.id] = obj;
 			});
