@@ -51,6 +51,7 @@ app.factory('ChartFactory', function(
                     obj.size[i]));
       }
     });
+    console.log(factory.data.chart);
     return factory.data.chart;
   };
 
