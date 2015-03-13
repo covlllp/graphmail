@@ -1,4 +1,4 @@
-app.directive('filterOptions', function(ChartFactory, FilterFactory) {
+app.directive('filterOptions', function(ChartFactory, FilterFactory, TypeFactory) {
 	return {
 		restrict: 'E',
 		templateUrl: 'js/common/directives/filteroption/filteroption.html',
@@ -11,6 +11,7 @@ app.directive('filterOptions', function(ChartFactory, FilterFactory) {
 
 			$scope.filterEmails = function() {
 				FilterFactory.filterEmails($scope.selectedFilters);
+				TypeFactory.splitEmails();
 				ChartFactory.updateChart();
 			};
 		}
