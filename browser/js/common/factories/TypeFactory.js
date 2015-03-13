@@ -1,5 +1,6 @@
 app.factory('TypeFactory', function(
 	FilterFactory,
+  TimeFactory,
 	typeHangouts,
 	typeAttachments,
 	typeSendOrReceive
@@ -25,7 +26,7 @@ app.factory('TypeFactory', function(
 
 	factory.splitEmails = function() {
 		factory.data.emailGroups =
-			factory.typeFunctions[factory.selectedType.selected](FilterFactory.data.chartEmails);
+			factory.typeFunctions[factory.selectedType.selected](TimeFactory.data.chartEmails);
 	};
 
 	return factory;

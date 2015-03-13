@@ -1,6 +1,5 @@
 app.factory('filterTime', function() {
   return function(min, max) {
-    console.log(min, max)
     return function(emails) {
       return emails.filter(function(email) {
         //if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {

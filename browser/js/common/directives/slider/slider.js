@@ -34,7 +34,7 @@ app.directive('slider', function(TimeFactory, FilterFactory, TypeFactory, ChartF
         if(newVal) { 
           var min = newVal.modelMin, max = newVal.modelMax;    
 
-          
+          TimeFactory.storeEmails(FilterFactory.data.chartEmails);
           TimeFactory.storeConstraints(min, max);
           TimeFactory.filterEmails();
           TypeFactory.splitEmails();
