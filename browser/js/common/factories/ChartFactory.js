@@ -48,9 +48,12 @@ app.factory('ChartFactory', function(
   factory.getD3ChartObj = function() {
     factory.data.chart.forEach(function(obj) {
       for (var i = 0; i < obj.xAxis.length; i++) {
-        obj.values.push(new ChartObj(obj.xAxis[i],
+        var chartObj = new ChartObj(obj.xAxis[i],
                     obj.yAxis[i],
-                    obj.size[i]));
+                    obj.size[i]);
+
+        if (!(chartObj.x <= 0 || chartObj.y <= 0 || chartObj.size <= 0))
+          obj.values.push(chartObj);
       }
     });
     return factory.data.chart;
