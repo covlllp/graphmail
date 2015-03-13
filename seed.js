@@ -9,11 +9,15 @@ var readline = require('readline');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/graphmail');
 require('./server/db/models/email');
+require('./server/db/models/thread');
+require('./server/db/models/label');
 var Email = mongoose.model('Email');
+var Thread = mongoose.model('Thread');
+var Label = mongoose.model('Label');
 
-var emailLimit = 1000;
+var goal = 1000;
+var emailLimit = goal;
 var userEmail = process.argv[2];
-var emailIds = [];
 
 
 // Authenticating through Google
@@ -47,44 +51,62 @@ function getAccessToken(oauth2Client, callback) { // Code from Google
   });
 }
 
-var getEmails = function(oauth2Client, pageToken, callback) {
-	console.log('...fetching next 100 emails');
-	Gmail.users.messages.list({
+var getThreads = function(oauth2Client, pageToken, callback) {
+	console.log('Fetching 100 Threads');
+	Gmail.users.threads.list({
 		userId: userEmail,
 		pageToken: pageToken,
 		auth: oauth2Client
-	}, function(err, res) {
-		emailIds = emailIds.concat(res.messages.map(function(message) {
-			return message.id;
-		}));
-		emailLimit -= res.messages.length;
-		if (emailLimit > 0) {
-			getEmails(oauth2Client, res.nextPageToken, callback);
-		} else (callback());
+	}, function(err, threadsObj) {
+		console.log('Saving fetched threads and emails to database');
+		async.each(threadsObj.threads, function(thread, done) {
+			Gmail.users.threads.get({
+				userId: userEmail,
+				id: thread.id,
+				pageToken: pageToken,
+				auth: oauth2Client
+			}, function(err, threadObj) {
+				if (!threadObj.messages[0].payload.headers[1]) done();
+				else {
+					var messages = threadObj.messages.map(function(email) {
+						Email.create({email: email});
+						return email.id;
+					});
+					Thread.create({id: thread.id, messages: messages});
+					emailLimit -= threadObj.messages.length;
+					done();
+				}
+			});
+		}, function() {
+			console.log((goal - emailLimit), 'emails fetched.');
+			if (emailLimit > 0) {
+				getThreads(oauth2Client, threadsObj.nextPageToken, callback);
+			} else callback();
+		});
 	});
 };
+
 
 mongoose.connection.on('open', function() {
 	console.log('Clearing database');
 	mongoose.connection.db.dropDatabase(function() {
 		console.log('Signing into Google');
 		getAccessToken(oauth2Client, function() {
-			console.log('Getting email IDs');
+			console.log('Getting Emails and Threads');
 			(new Promise(function(resolve, reject) {
-				getEmails(oauth2Client, null, resolve);
+				getThreads(oauth2Client, null, resolve);
 			})).then(function() {
-				console.log('Number of emails: ', emailIds.length);
-				console.log('Populating emails and saving to database');
-				async.each(emailIds, function(emailId, done) {
-					Gmail.users.messages.get({
-						userId: userEmail,
-						id: emailId,
-						auth: oauth2Client
-					}, function(err, message) {
-						Email.create({email: message}, done);
+				console.log('Fetching labels');
+				Gmail.users.labels.list({
+					userId: userEmail,
+					auth: oauth2Client
+				}, function(err, labelsObj) {
+					console.log('Saving labels to database');
+					async.each(labelsObj.labels, function(label, done) {
+						Label.create({label: label}, done);
+					}, function() {
+						console.log('Population done, press CTRL+C to exit');
 					});
-				}, function() {
-					console.log('Population done, press CTRL+C to exit');
 				});
 			});
 		});
