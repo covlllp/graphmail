@@ -24,10 +24,10 @@ app.factory('ChartFactory', function(
   };
 
   factory.categoryFunctions = {
-    'Email Size': catEmailSizes,
+    'Email Size [kB]': catEmailSizes,
     'Email Dates': catEmailDates,
     'Thread Length': catThreadLength,
-    'Response Times': catResponseTime
+    'Response Times [minutes]': catResponseTime
   };
 
   factory.updateChart = function() {
