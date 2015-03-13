@@ -86,11 +86,12 @@ router.get('/', function(req, res, next) {
 				return labelObj.label;
 			});
 			console.log('Labels fetched');
-			res.json({
+			var rtnObj = {
 				emails: emails,
 				threads: threads,
 				labels: labels
-			});
+			};
+			res.json(rtnObj);
 		});
 	}
 });
