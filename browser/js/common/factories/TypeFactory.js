@@ -1,7 +1,8 @@
 app.factory('TypeFactory', function(
 	FilterFactory,
 	typeHangouts,
-	typeAttachments
+	typeAttachments,
+	typeSendOrReceive
 ) {
 	var factory = {};
 
@@ -17,8 +18,9 @@ app.factory('TypeFactory', function(
 
 	factory.typeFunctions = {
 		'No Type Separation': function(emails) { return {'0': emails}; },
-		'By Hangouts': typeHangouts,
-		'By Attachment': typeAttachments
+		// 'By Hangouts': typeHangouts,
+		'By Attachment': typeAttachments,
+		'Sent or Recieved': typeSendOrReceive
 	};
 
 	factory.splitEmails = function() {
