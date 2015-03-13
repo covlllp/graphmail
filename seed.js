@@ -39,8 +39,6 @@ function getAccessToken(oauth2Client, callback) { // Code from Google
   rl.question('Enter the code here: ', function(code) {
     // request access token
     oauth2Client.getToken(code, function(err, tokens) {
-    	console.log(err);
-    	console.log(tokens);
       // set tokens to the client
       // TODO: tokens should be set by OAuth2 client.
       oauth2Client.setCredentials(tokens);

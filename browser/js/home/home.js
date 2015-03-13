@@ -13,18 +13,19 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Email, ChartFactory, FilterFactory){
+app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Email, ChartFactory, FilterFactory, TypeFactory){
   if (user) {
     $scope.showLoading = true;
     Email.query().$promise.then(function(emails) {
       FilterFactory.data.emails = emails;
       FilterFactory.resetEmails();
+      TypeFactory.splitEmails();
       $scope.emails = FilterFactory.data.chartEmails;
       $scope.showLoading = false;
     });
   } else $scope.emails = [];
 
-  $scope.chart = ChartFactory.chart;
+  $scope.data = ChartFactory.data;
   $scope.user = user;
 
 
@@ -32,19 +33,14 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Emai
 
 
   $scope.isShowingTime = false;
-  $scope.timeOption = 'Cummulative';
-
-  $scope.d3Chart = {
-    min: 20,
-    max: 80
-  };
+  $scope.timeOption = null;
 
 
   $scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
 
   $scope.exampleData = [];
-  $scope.exampleData.push(ChartFactory.getD3ChartObj());
-  
+
+  $scope.exampleData = ChartFactory.getD3ChartObj();
 
   $scope.xAxisTickFormatFunction = function() {
     return ;
@@ -54,9 +50,8 @@ app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Emai
   };
 
   
-
-  $scope.$watchCollection('chart', function() { 
-    $scope.exampleData[0] = ChartFactory.getD3ChartObj();
+  $scope.$watchCollection('data', function() {
+      $scope.exampleData = ChartFactory.getD3ChartObj();
   });
 
 

@@ -1,5 +1,5 @@
 app.factory('ChartFactory', function(
-  FilterFactory,
+  TypeFactory,
   catEmailSizes,
   catEmailDates
 ) {
@@ -11,10 +11,8 @@ app.factory('ChartFactory', function(
     this.size = z || 10;
   };
 
-  factory.chart = {
-    xAxis: [],
-    yAxis: [],
-    size: []
+  factory.data = {
+    chart: [{ key: '0', values: [], xAxis: [], yAxis: [], size: [] }]
   };
 
   factory.categoryOptions = {
@@ -29,22 +27,29 @@ app.factory('ChartFactory', function(
   };
 
   factory.updateChart = function() {
-    Object.keys(factory.chart).forEach(function(key) {
-      var functionName = factory.categoryOptions[key];
-      if (functionName)
-        factory.chart[key]
-        = factory.categoryFunctions[functionName](FilterFactory.data.chartEmails);
+    factory.data.chart = Object.keys(TypeFactory.data.emailGroups).map(function(title) {
+      return { key: title, values: [], xAxis: [], yAxis: [], size: [] };
+    });
+
+    Object.keys(factory.categoryOptions).forEach(function(axis) {
+      var functionName = factory.categoryOptions[axis];
+      if (functionName) {
+        factory.data.chart.forEach(function(obj) {
+          obj[axis] = factory.categoryFunctions[functionName](TypeFactory.data.emailGroups[obj.key]);
+        });
+      }
     });
   };
 
   factory.getD3ChartObj = function() {
-    var arr = [];
-    for (var i = 0; i < factory.chart.xAxis.length; i++) {
-      arr.push(new ChartObj(factory.chart.xAxis[i],
-                  factory.chart.yAxis[i],
-                  factory.chart.size[i]));
-    }
-    return {values: arr, key: 'Hello'};
+    factory.data.chart.forEach(function(obj) {
+      for (var i = 0; i < obj.xAxis.length; i++) {
+        obj.values.push(new ChartObj(obj.xAxis[i],
+                    obj.yAxis[i],
+                    obj.size[i]));
+      }
+    });
+    return factory.data.chart;
   };
 
   return factory;

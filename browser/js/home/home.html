@@ -21,7 +21,7 @@
       <div class="col-xs-12">
         <div class="panel panel-success">
           <div class="panel-heading">Types</div>
-          <div class="panel-body">Hello</div>
+          <type-options></type-options>
         </div>
       </div>
       <div class="col-xs-12">
@@ -32,26 +32,13 @@
       </div>
     </div>
     <div class="col-sm-9 well">
-
-      <div>
-        <label class="checkbox-inline">
-         <input type="checkbox"  ng-model="isShowingTime"> Show time
-       </label>
-
-        <span ng-show="isShowingTime">
-        
-          <label class="radio-inline">
-            <input type="radio" name="timeOption" id="" ng-model="timeOption" value="Cummulative"> Cummulative
-          </label>
-
-          <label class="radio-inline">
-            <input type="radio" name="timeOption" id="" ng-model="timeOption" value="Range"> Range
-          </label>
-        </span>
-      </div>
+      
+      <label class="checkbox-inline">
+       <input type="checkbox"  ng-model="isShowingTime"> Show time
+     </label>
+      <time-select ></time-select>
 
       <nvd3-scatter-chart
-            objectequality="true"
             data="exampleData"
             id="exampleId"
             width="550"
