@@ -2,6 +2,7 @@ app.factory('FilterFactory', function(
 	filterHangouts,
 	filterAttachments,
 	filterSendOrReceive
+	// filterReplies
 ) {
 	var factory = {};
 
@@ -25,6 +26,8 @@ app.factory('FilterFactory', function(
 		'Has Attachments': filterAttachments(true),
 		'Sent Email': filterSendOrReceive(true),
 		'Received Email': filterSendOrReceive(false)
+		// 'Part of a Thread': filterReplies(true),
+		// 'Single Email': filterReplies(false)
 	};
 
 	factory.resetEmails = function() {
