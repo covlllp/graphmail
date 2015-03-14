@@ -1,7 +1,7 @@
-app.factory('catThreadLength', function(FilterFactory) {
+app.factory('catThreadLength', function(HashFactory) {
 	return function(emails) {
 		return emails.map(function(email) {
-      return FilterFactory.hash.threads[email.threadId].messages.length;
+      return HashFactory.hash.threads[email.threadId].messages.length;
     });
 	};
 });
