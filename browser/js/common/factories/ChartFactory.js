@@ -3,7 +3,8 @@ app.factory('ChartFactory', function(
   catEmailSizes,
   catEmailDates,
   catThreadLength,
-  catResponseTime
+  catResponseTime,
+  catDates
 ) {
   var factory = {};
 
@@ -27,7 +28,11 @@ app.factory('ChartFactory', function(
     'Email Size [kB]': catEmailSizes,
     'Email Dates': catEmailDates,
     'Thread Length': catThreadLength,
-    'Response Times [minutes]': catResponseTime
+    'Response Times [minutes]': catResponseTime,
+    'Time of Day [hour]': catDates.Day,
+    'Day of the Week [day]': catDates.Week,
+    'Day of the Month [day]': catDates.Month,
+    'Month of the Year [month]': catDates.Year
   };
 
   factory.updateChart = function() {
