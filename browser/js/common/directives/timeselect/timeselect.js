@@ -4,5 +4,5 @@ app.directive('timeSelect', function() {
     templateUrl: 'js/common/directives/timeselect/timeselect.html',
     link: function(scope, element, attrs) {
     }
-  }
-})
+  };
+});
