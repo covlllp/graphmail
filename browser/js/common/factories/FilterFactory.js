@@ -1,22 +1,11 @@
 app.factory('FilterFactory', function(
+	DataFactory,
 	filterHangouts,
 	filterAttachments,
-	filterSendOrReceive
+	filterSendOrReceive,
+	filterReplies
 ) {
 	var factory = {};
-
-	factory.data = {
-		emails: [],
-		threads: [],
-		labels: [],
-		chartEmails: []
-	};
-
-	factory.hash = {
-		emails: {},
-		threads: {},
-		labels: {}
-	};
 
 	factory.filterFunctions = {
 		// 'Hide Hangouts': filterHangouts(false),
@@ -24,28 +13,18 @@ app.factory('FilterFactory', function(
 		'No Attachments': filterAttachments(false),
 		'Has Attachments': filterAttachments(true),
 		'Sent Email': filterSendOrReceive(true),
-		'Received Email': filterSendOrReceive(false)
-	};
-
-	factory.resetEmails = function() {
-		factory.data.chartEmails = factory.data.emails;
+		'Received Email': filterSendOrReceive(false),
+		'Part of a Thread': filterReplies(true),
+		'Single Email': filterReplies(false)
 	};
 
 	factory.filterEmails = function(filterObj) {
-		factory.resetEmails();
+		DataFactory.resetEmails();
 		for (var key in filterObj) {
 			if (filterObj[key]) {
-				factory.data.chartEmails
-					= factory.filterFunctions[key](factory.data.chartEmails);
+				DataFactory.data.chartEmails
+					= factory.filterFunctions[key](DataFactory.data.chartEmails);
 			}
-		}
-	};
-
-	factory.populateHashes = function() {
-		for (var key in factory.hash) {
-			factory.data[key].forEach(function(obj) {
-				factory.hash[key][obj.id] = obj;
-			});
 		}
 	};
 
