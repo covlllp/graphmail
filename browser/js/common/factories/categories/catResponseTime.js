@@ -5,7 +5,6 @@ app.factory('catResponseTime', function(DataFactory, EmailFactory) {
       var emailInd = thread.messages.indexOf(email.id);
       if (emailInd < 1) return -1;
       var prevEmail = DataFactory.hash.emails[thread.messages[emailInd - 1]];
-      console.log((EmailFactory.getDate(email) - EmailFactory.getDate(prevEmail))/60000);
       return (EmailFactory.getDate(email) - EmailFactory.getDate(prevEmail))/60000;
     });
   };
