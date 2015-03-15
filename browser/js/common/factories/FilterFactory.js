@@ -1,17 +1,11 @@
 app.factory('FilterFactory', function(
+	DataFactory,
 	filterHangouts,
 	filterAttachments,
 	filterSendOrReceive,
 	filterReplies
 ) {
 	var factory = {};
-
-	factory.data = {
-		emails: [],
-		threads: [],
-		labels: [],
-		chartEmails: []
-	};
 
 	factory.filterFunctions = {
 		// 'Hide Hangouts': filterHangouts(false),
@@ -24,16 +18,12 @@ app.factory('FilterFactory', function(
 		'Single Email': filterReplies(false)
 	};
 
-	factory.resetEmails = function() {
-		factory.data.chartEmails = factory.data.emails;
-	};
-
 	factory.filterEmails = function(filterObj) {
-		factory.resetEmails();
+		DataFactory.resetEmails();
 		for (var key in filterObj) {
 			if (filterObj[key]) {
-				factory.data.chartEmails
-					= factory.filterFunctions[key](factory.data.chartEmails);
+				DataFactory.data.chartEmails
+					= factory.filterFunctions[key](DataFactory.data.chartEmails);
 			}
 		}
 	};

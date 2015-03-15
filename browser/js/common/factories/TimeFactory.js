@@ -1,4 +1,4 @@
-app.factory('TimeFactory', function(FilterFactory, filterTime){
+app.factory('TimeFactory', function(DataFactory, filterTime){
   var factory = {};
   var now = Date.now();
 
@@ -24,7 +24,7 @@ app.factory('TimeFactory', function(FilterFactory, filterTime){
     factory.data.min = now;
     factory.data.max = now;
 
-    FilterFactory.data.chartEmails.forEach(function(email) {
+    DataFactory.data.chartEmails.forEach(function(email) {
       if (email.payload.headers[1] && email.payload.headers[1].name === 'Received') {
         var val = email.payload.headers[1].value;
         var date = Date.parse(val.split(';')[1].trim());
@@ -37,7 +37,7 @@ app.factory('TimeFactory', function(FilterFactory, filterTime){
 
   factory.filterEmails = function() {
     factory.data.chartEmails
-      = filterTime(factory.data.min, factory.data.max)(FilterFactory.data.chartEmails);
+      = filterTime(factory.data.min, factory.data.max)(DataFactory.data.chartEmails);
   };
 
   return factory;

@@ -13,31 +13,37 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl', function ($rootScope, $scope, AUTH_EVENTS, user, Email, ChartFactory, FilterFactory, TypeFactory, TimeFactory, HashFactory){
+app.controller('HomeCtrl', function (
+  $rootScope,
+  $scope,
+  AUTH_EVENTS,
+  user,
+  Email,
+  ChartFactory,
+  FilterFactory,
+  TypeFactory,
+  TimeFactory,
+  DataFactory
+){
   if (user) {
     $scope.showLoading = true;
     Email.get().$promise.then(function(data) {
-      FilterFactory.data.emails = data.emails;
-      FilterFactory.data.threads = data.threads;
-      FilterFactory.data.labels = data.labels;
-      HashFactory.populateHashes();
+      DataFactory.data.emails = data.emails;
+      DataFactory.data.threads = data.threads;
+      DataFactory.data.labels = data.labels;
+      DataFactory.populateHashes();
 
-      FilterFactory.resetEmails();
+      DataFactory.resetEmails();
       TimeFactory.resetMinMax();
       TimeFactory.filterEmails();
       TypeFactory.splitEmails();
-      $scope.emails = FilterFactory.data.chartEmails;
+      $scope.emails = DataFactory.data.chartEmails;
       $scope.showLoading = false;
-      console.log(FilterFactory.hash);
     });
   } else $scope.emails = [];
 
   $scope.data = ChartFactory.data;
   $scope.user = user;
-
-
-
-
 
   $scope.isShowingTime = false;
   $scope.timeOption = null;
