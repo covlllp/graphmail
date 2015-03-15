@@ -15,7 +15,7 @@ var Email = mongoose.model('Email');
 var Thread = mongoose.model('Thread');
 var Label = mongoose.model('Label');
 
-var goal = 1000;
+var goal = 2000;
 var emailLimit = goal;
 var userEmail = process.argv[2];
 
