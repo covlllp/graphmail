@@ -10,21 +10,21 @@ app.factory('catDates', function(EmailFactory) {
     Week: function(emails) {
       return emails.map(function(email) {
         var date = EmailFactory.getDate(email);
-        return Date(date).getDay();
+        return new Date(date).getDay() + 1;
       });
     },
 
     Month: function(emails) {
       return emails.map(function(email) {
         var date = EmailFactory.getDate(email);
-        return Date(date).getDate();
+        return new Date(date).getDate();
       });
     },
 
     Year: function(emails) {
       return emails.map(function(email) {
         var date = EmailFactory.getDate(email);
-        return Date(date).getMonth() + 1;
+        return new Date(date).getMonth() + 1;
       });
     }
   };

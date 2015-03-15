@@ -29,7 +29,10 @@ app.factory('ChartFactory', function(
     'Email Dates': catEmailDates,
     'Thread Length': catThreadLength,
     'Response Times [minutes]': catResponseTime,
-    'Time of Day [hour]': catDates.Day
+    'Time of Day [hour]': catDates.Day,
+    'Day of the Week [day]': catDates.Week,
+    'Day of the Month [day]': catDates.Month,
+    'Month of the Year [month]': catDates.Year
   };
 
   factory.updateChart = function() {
