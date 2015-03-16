@@ -49,6 +49,18 @@ app.controller('HomeCtrl', function (
   $scope.timeOption = null;
 
 
+  var colorArray = [
+    '#3498db',
+    '#f39c12',
+    '#18bc9c',
+    '#e74c3c',
+    '#2c3e50'];
+  $scope.colorFunction = function() {
+      return function(d, i) {
+          return colorArray[i];
+      };
+  };
+
   $scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
 
   $scope.exampleData = [];
