@@ -5,6 +5,7 @@ app.directive('typeOptions', function(ChartFactory, TypeFactory) {
 		link: function($scope, elem, attr) {
 			$scope.typeOptions = Object.keys(TypeFactory.typeFunctions);
       $scope.selectedType = TypeFactory.selectedType;
+      $scope.typeFunctions = TypeFactory.typeFunctions;
 
       $scope.splitEmails = function() {
         TypeFactory.splitEmails();

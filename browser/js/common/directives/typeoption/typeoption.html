@@ -2,9 +2,18 @@
 	<tr>
 		<th></th>
 		<th></th>
+		<th></th>
 	</tr>
 	<tr ng-repeat="option in typeOptions">
 		<td>{{ option }}</td>
+		<td>
+			<input ng-show="typeFunctions[option].hasStr"
+				type="text"
+				class="form-control input-sm"
+				placeholder="Type here"
+				ng-change="selectedType.selected === option && splitEmails()"
+				ng-model="selectedType.str">
+				</td>
 		<td>
 			<div class="radio text-center">
 				<label>

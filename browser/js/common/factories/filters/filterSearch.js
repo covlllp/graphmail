@@ -5,9 +5,10 @@ app.factory('filterSearch', function() {
       var regexp = new RegExp(searchStr, 'i');
 
       return emails.filter(function(email) {
-        return email.payload.headers.some(function(header) {
+        var match = email.payload.headers.some(function(header) {
           return regexp.test(header.value);
         });
+        return bool ? match : !match;
       });
     };
   };
