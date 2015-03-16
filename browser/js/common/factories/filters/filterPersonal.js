@@ -3,11 +3,10 @@ app.factory('filterPersonal', function() {
     // true if personal (no cc, only one to), false otherwise
     return function(emails) {
       return emails.filter(function(email) {
-        email.payload.headers.forEach(function(header) {
-          if (header.name === 'Cc') {
-            return false;
-          } else return true;
+        var isGroup = email.payload.headers.some(function(header) {
+          return header.name === 'Cc';
         });
+        return bool ? !isGroup : isGroup;
       });
     };
   };

@@ -18,7 +18,9 @@ app.factory('FilterFactory', function(
 		'Sent Email': {fn: filterSendOrReceive(true), hasStr: false},
 		'Received Email': {fn: filterSendOrReceive(false), hasStr: false},
 		'Part of a Thread': {fn: filterReplies(true), hasStr: false},
-		'Single Email': {fn: filterReplies(false), hasStr: false}
+		'Single Email': {fn: filterReplies(false), hasStr: false},
+		'Personal Emails': {fn: filterPersonal(true), hasStr: false},
+		'Group Emails': {fn: filterPersonal(false), hasStr: false}
 	};
 
 	factory.filterEmails = function(filterObj) {
