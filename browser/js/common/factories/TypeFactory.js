@@ -4,7 +4,7 @@ app.factory('TypeFactory', function(
 	typeHangouts,
 	typeAttachments,
 	typeSendOrReceive,
-  typeImportant
+  typeImportant,
 	typeSearch
 ) {
 	var factory = {};
