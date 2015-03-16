@@ -9,12 +9,27 @@ app.factory('EmailFactory', function() {
   };
 
   factory.getSender = function(email) {
+    var rtn;
     email.payload.headers.forEach(function(header) {
       if (header.name === 'From') {
-        if (header.value.indexOf('<') === -1) return header.value;
-        else return header.value.match(/<(.+)>/)[1];
+        if (header.value.indexOf('<') === -1) rtn = header.value;
+        else rtn = header.value.match(/<(.+)>/)[1];
+        return;
       }
     });
+    return rtn;
+  };
+
+  factory.getRecipient = function(email) {
+    var rtn;
+    email.payload.headers.forEach(function(header) {
+      if (header.name === 'To') {
+        if (header.value.indexOf('<') === -1) rtn = header.value;
+        else rtn = header.value.match(/<(.+)>/)[1];
+        return;
+      }
+    });
+    return rtn;
   };
 
   return factory;
