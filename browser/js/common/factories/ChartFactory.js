@@ -5,7 +5,8 @@ app.factory('ChartFactory', function(
   catEmailDates,
   catThreadLength,
   catResponseTime,
-  catDates
+  catDates,
+  catFriendTime
 ) {
   var factory = {};
 
@@ -30,6 +31,7 @@ app.factory('ChartFactory', function(
     'Email Dates': catEmailDates,
     'Thread Length': catThreadLength,
     'Response Times [minutes]': catResponseTime,
+    'Length of Friendship': catFriendTime,
     'Time of Day [hour]': catDates.Day,
     'Day of the Week [day]': catDates.Week,
     'Day of the Month [day]': catDates.Month,
