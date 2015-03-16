@@ -5,9 +5,9 @@
 		<th class="text-center">Filter</th>
 	</tr>
 	<tr ng-repeat="option in options">
-		<td>{{ option }}</td>
-		<td>
-			<input ng-show="selectedFilters[option].hasStr"
+		<td colspan="{{selectedFilters[option].hasStr ? 1 : 2}}">{{ option }}</td>
+		<td ng-show="selectedFilters[option].hasStr">
+			<input
 				type="text"
 				class="form-control input-sm"
 				placeholder="Type here"

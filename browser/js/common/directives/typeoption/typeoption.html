@@ -5,9 +5,9 @@
 		<th></th>
 	</tr>
 	<tr ng-repeat="option in typeOptions">
-		<td>{{ option }}</td>
-		<td>
-			<input ng-show="typeFunctions[option].hasStr"
+		<td colspan="{{typeFunctions[option].hasStr ? 1 : 2}}">{{ option }}</td>
+		<td ng-show="typeFunctions[option].hasStr">
+			<input
 				type="text"
 				class="form-control input-sm"
 				placeholder="Type here"
