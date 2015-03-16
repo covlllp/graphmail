@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <div class="col-lg-9 col-md-8 col-xs-6 well">
+    <div class="col-lg-9 col-md-8 col-xs-6">
       <log-scales></log-scales>
 
       <label class="checkbox-inline">
@@ -43,11 +43,12 @@
       <nvd3-scatter-chart
             data="exampleData"
             id="exampleId"
-            width="550"
-            height="400"
+ 
             color="colorFunction()"
             showLegend="true">
-        <svg></svg>
+        <div class="svg-container">
+          <svg></svg>
+        </div>
       </nvd3-scatter-chart>
       
       <slider slider-style="timeOption" constraints="d3Chart" ng-show="isShowingTime"></slider>
