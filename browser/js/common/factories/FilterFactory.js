@@ -4,6 +4,7 @@ app.factory('FilterFactory', function(
 	filterAttachments,
 	filterSendOrReceive,
 	filterReplies,
+	filterPersonal,
   filterImportant,
 	filterSearch,
   filterLabel
@@ -22,7 +23,9 @@ app.factory('FilterFactory', function(
     'Part of a Thread': {fn: filterReplies(true), hasStr: false},
     'Single Email': {fn: filterReplies(false), hasStr: false},
     'Important': {fn: filterImportant(true), hasStr: false},
-    'Unimportant': {fn: filterImportant(false), hasStr: false}  
+    'Unimportant': {fn: filterImportant(false), hasStr: false},
+		'Personal Emails': {fn: filterPersonal(true), hasStr: false},
+		'Group Emails': {fn: filterPersonal(false), hasStr: false}
 	};
 
 	factory.filterEmails = function(filterObj) {

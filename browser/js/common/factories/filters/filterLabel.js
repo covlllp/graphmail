@@ -5,6 +5,7 @@ app.factory('filterLabel', function(DataFactory) {
       var regexp = new RegExp(searchStr, 'i');
 
       return emails.filter(function(email) {
+        if (!email.labelIds) return bool ? false : true;
         var match = email.labelIds.some(function(labelId) {
           return regexp.test(labelId);
         });

@@ -4,8 +4,9 @@ app.factory('TypeFactory', function(
 	typeHangouts,
 	typeAttachments,
 	typeSendOrReceive,
-  typeImportant,
 	typeSearch,
+	typePersonal,
+  typeImportant,
   typeLabel
 ) {
 	var factory = {};
@@ -28,7 +29,8 @@ app.factory('TypeFactory', function(
 		// 'By Hangouts': typeHangouts,
     'By Importance': {fn: typeImportant, hasStr: false},
 		'By Attachment': {fn: typeAttachments, hasStr: false},
-		'Sent or Recieved': {fn: typeSendOrReceive, hasStr: false}
+		'Sent or Recieved': {fn: typeSendOrReceive, hasStr: false},
+		'Personal or Group': {fn: typePersonal, hasStr: false}
 	};
 
 	factory.splitEmails = function() {
