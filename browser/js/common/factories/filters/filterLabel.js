@@ -7,7 +7,6 @@ app.factory('filterLabel', function(DataFactory) {
       return emails.filter(function(email) {
         //var label = DataFactory.hash.label[email.labelId];
         return email.labelIds.some(function(labelId) {
-          console.log(labelId)
           return regexp.test(labelId);
         });
       });
