@@ -38,6 +38,7 @@ app.controller('HomeCtrl', function (
       TimeFactory.filterEmails();
       TypeFactory.splitEmails();
       $scope.emails = DataFactory.data.chartEmails;
+      //$scope.labels = data.labels;
       $scope.showLoading = false;
     });
   } else $scope.emails = [];
@@ -66,13 +67,6 @@ app.controller('HomeCtrl', function (
   $scope.exampleData = [];
 
   $scope.exampleData = ChartFactory.getD3ChartObj();
-
-  $scope.xAxisTickFormatFunction = function() {
-    return ;
-  };
-  $scope.yAxisTickFormatFunction = function() {
-    return ;
-  };
 
   
   $scope.$watchCollection('data', function() {

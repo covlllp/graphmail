@@ -4,7 +4,8 @@ var app = angular.module('GraphMailApp', [
   'fsaPreBuilt',
   'ngResource',
   'nvd3ChartDirectives',
-  'ui-rangeSlider'
+  'ui-rangeSlider',
+  'ui.select'
 ]);
 
 app.config(function ($urlRouterProvider, $locationProvider) {
