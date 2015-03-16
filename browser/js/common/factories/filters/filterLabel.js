@@ -6,8 +6,12 @@ app.factory('filterLabel', function(DataFactory) {
 
       return emails.filter(function(email) {
         if (!email.labelIds) return bool ? false : true;
-        var match = email.labelIds.some(function(labelId) {
-          return regexp.test(labelId);
+        var labels = email.labelIds.map(function(labelId) {
+          return DataFactory.hash.labels[labelId].name;
+        });
+
+        var match = labels.some(function(label) {
+          return regexp.test(label);
         });
         return bool ? match : !match;
       });
