@@ -3,7 +3,8 @@ app.factory('FilterFactory', function(
 	filterHangouts,
 	filterAttachments,
 	filterSendOrReceive,
-	filterReplies
+	filterReplies,
+  filterImportant
 ) {
 	var factory = {};
 
@@ -15,7 +16,9 @@ app.factory('FilterFactory', function(
 		'Sent Email': filterSendOrReceive(true),
 		'Received Email': filterSendOrReceive(false),
 		'Part of a Thread': filterReplies(true),
-		'Single Email': filterReplies(false)
+		'Single Email': filterReplies(false),
+    'Important': filterImportant(true),
+    'Unimportant': filterImportant(false)
 	};
 
 	factory.filterEmails = function(filterObj) {
