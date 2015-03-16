@@ -15,6 +15,7 @@ app.config(function ($stateProvider) {
 
 app.controller('HomeCtrl', function (
   $rootScope,
+  $window,
   $scope,
   AUTH_EVENTS,
   user,
@@ -49,6 +50,10 @@ app.controller('HomeCtrl', function (
   $scope.isShowingTime = false;
   $scope.timeOption = null;
 
+
+  $scope.logInWith = function(provider){
+    $window.location.href = '/auth/' + provider;
+  };
 
   var colorArray = [
     '#3498db',
