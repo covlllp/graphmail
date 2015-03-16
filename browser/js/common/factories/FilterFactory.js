@@ -4,7 +4,8 @@ app.factory('FilterFactory', function(
 	filterAttachments,
 	filterSendOrReceive,
 	filterReplies,
-	filterSearch
+	filterSearch,
+	filterPersonal
 ) {
 	var factory = {};
 
