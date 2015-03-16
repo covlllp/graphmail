@@ -13,16 +13,17 @@ app.factory('FilterFactory', function(
 	factory.filterFunctions = {
 		// 'Hide Hangouts': filterHangouts(false),
 		// 'Only Hangouts': filterHangouts(true),
-		'No Attachments': {fn: filterAttachments(false), hasStr: false},
-		'Has Attachments': {fn: filterAttachments(true), hasStr: false},
-		'Sent Email': {fn: filterSendOrReceive(true), hasStr: false},
-		'Received Email': {fn: filterSendOrReceive(false), hasStr: false},
-		'Part of a Thread': {fn: filterReplies(true), hasStr: false},
-		'Single Email': {fn: filterReplies(false), hasStr: false},
+		'Filter by Email': {fn: filterSearch(true), hasStr: true},
+    'Filter by Label': {fn: filterLabel(true), hasStr: true}
+    'No Attachments': {fn: filterAttachments(false), hasStr: false},
+    'Has Attachments': {fn: filterAttachments(true), hasStr: false},
+    'Sent Email': {fn: filterSendOrReceive(true), hasStr: false},
+    'Received Email': {fn: filterSendOrReceive(false), hasStr: false},
+    'Part of a Thread': {fn: filterReplies(true), hasStr: false},
+    'Single Email': {fn: filterReplies(false), hasStr: false},
     'Important': {fn: filterImportant(true), hasStr: false},
     'Unimportant': {fn: filterImportant(false), hasStr: false},  
-    'Filter by Email': {fn: filterSearch(true), hasStr: true},
-    'Filter by Label': {fn: filterLabel(true), hasStr: true}
+		'Single Email': {fn: filterReplies(false), hasStr: false}
 	};
 
 	factory.filterEmails = function(filterObj) {

@@ -47,7 +47,6 @@ app.factory('ChartFactory', function(
         factory.data.chart.forEach(function(obj) {
           obj[axis] = factory.categoryFunctions[functionName](TypeFactory.data.emailGroups[obj.key]);
           obj[axis] = LogFactory.logify(obj[axis], axis);
-          // LogFactory.logify(obj[axis], axis);
         });
       }
     });

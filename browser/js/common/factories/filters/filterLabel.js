@@ -5,10 +5,10 @@ app.factory('filterLabel', function(DataFactory) {
       var regexp = new RegExp(searchStr, 'i');
 
       return emails.filter(function(email) {
-        //var label = DataFactory.hash.label[email.labelId];
-        return email.labelIds.some(function(labelId) {
+        var match = email.labelIds.some(function(labelId) {
           return regexp.test(labelId);
         });
+        return bool ? match : !match;
       });
     };
   };
