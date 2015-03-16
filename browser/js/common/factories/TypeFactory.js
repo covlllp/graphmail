@@ -3,7 +3,8 @@ app.factory('TypeFactory', function(
   TimeFactory,
 	typeHangouts,
 	typeAttachments,
-	typeSendOrReceive
+	typeSendOrReceive,
+  typeImportant
 ) {
 	var factory = {};
 
@@ -21,7 +22,8 @@ app.factory('TypeFactory', function(
 		'No Type Separation': function(emails) { return {'0': emails}; },
 		// 'By Hangouts': typeHangouts,
 		'By Attachment': typeAttachments,
-		'Sent or Recieved': typeSendOrReceive
+		'Sent or Recieved': typeSendOrReceive,
+    'By Importance': typeImportant
 	};
 
 	factory.splitEmails = function() {

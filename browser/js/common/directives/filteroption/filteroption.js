@@ -5,7 +5,11 @@ app.directive('filterOptions', function(ChartFactory, FilterFactory, TypeFactory
 		link: function($scope, elem, attr) {
 			$scope.options = Object.keys(FilterFactory.filterFunctions);
 			$scope.selectedFilters = $scope.options.reduce(function(prev, cur) {
-				prev[cur] = false;
+				prev[cur] = {
+					selected: false,
+					hasStr: FilterFactory.filterFunctions[cur].hasStr,
+					str: ''
+				};
 				return prev;
 			}, {});
 

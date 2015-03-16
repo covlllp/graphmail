@@ -3,7 +3,7 @@
 		padding: 0;
 		padding-left: 4px;
 		vertical-align: middle;
-		font-size: 10pt;
+		font-size: 9pt;
 	}
 
 	tr {
@@ -16,4 +16,9 @@
 .radio, .checkbox {
 	margin-top: 5px;
 	margin-bottom: 5px;
+}
+
+.input-sm {
+	height: 24px;
+	font-size: 9pt;
 }

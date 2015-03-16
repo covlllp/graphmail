@@ -38,6 +38,7 @@ app.controller('HomeCtrl', function (
       TimeFactory.filterEmails();
       TypeFactory.splitEmails();
       $scope.emails = DataFactory.data.chartEmails;
+      //$scope.labels = data.labels;
       $scope.showLoading = false;
     });
   } else $scope.emails = [];
@@ -49,18 +50,23 @@ app.controller('HomeCtrl', function (
   $scope.timeOption = null;
 
 
+  var colorArray = [
+    '#3498db',
+    '#f39c12',
+    '#18bc9c',
+    '#e74c3c',
+    '#2c3e50'];
+  $scope.colorFunction = function() {
+      return function(d, i) {
+          return colorArray[i];
+      };
+  };
+
   $scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
 
   $scope.exampleData = [];
 
   $scope.exampleData = ChartFactory.getD3ChartObj();
-
-  $scope.xAxisTickFormatFunction = function() {
-    return ;
-  };
-  $scope.yAxisTickFormatFunction = function() {
-    return ;
-  };
 
   
   $scope.$watchCollection('data', function() {
