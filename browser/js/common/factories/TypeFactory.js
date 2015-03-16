@@ -7,7 +7,8 @@ app.factory('TypeFactory', function(
 	typeSearch,
 	typePersonal,
   typeImportant,
-  typeLabel
+  typeLabel,
+  typeLabels
 ) {
 	var factory = {};
 
@@ -26,6 +27,7 @@ app.factory('TypeFactory', function(
 		'No Type Separation': {fn: function(emails) { return {'0': emails}; }, hasStr: false},
 		'By Search String': {fn: typeSearch, hasStr: true},
     'By Label': {fn: typeLabel, hasStr: true},   
+    'By Custom Labels': {fn: typeLabels, hasStr: false},   
 		// 'By Hangouts': typeHangouts,
     'By Importance': {fn: typeImportant, hasStr: false},
 		'By Attachment': {fn: typeAttachments, hasStr: false},
