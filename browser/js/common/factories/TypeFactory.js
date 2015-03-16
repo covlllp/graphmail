@@ -3,7 +3,8 @@ app.factory('TypeFactory', function(
   TimeFactory,
 	typeHangouts,
 	typeAttachments,
-	typeSendOrReceive
+	typeSendOrReceive,
+	typeSearch
 ) {
 	var factory = {};
 
@@ -12,21 +13,23 @@ app.factory('TypeFactory', function(
 	};
 
 	factory.selectedType = {
-		selected: 'No Type Separation'
+		selected: 'No Type Separation',
+		str: ''
 	};
 
 	function tempFunction() {}
 
 	factory.typeFunctions = {
-		'No Type Separation': function(emails) { return {'0': emails}; },
+		'No Type Separation': {fn: function(emails) { return {'0': emails}; }, hasStr: false},
+		'By Search String': {fn: typeSearch, hasStr: true},
 		// 'By Hangouts': typeHangouts,
-		'By Attachment': typeAttachments,
-		'Sent or Recieved': typeSendOrReceive
+		'By Attachment': {fn: typeAttachments, hasStr: false},
+		'Sent or Recieved': {fn: typeSendOrReceive, hasStr: false}
 	};
 
 	factory.splitEmails = function() {
 		factory.data.emailGroups =
-			factory.typeFunctions[factory.selectedType.selected](TimeFactory.data.chartEmails);
+			factory.typeFunctions[factory.selectedType.selected].fn(TimeFactory.data.chartEmails, factory.selectedType.str);
 	};
 
 	return factory;
