@@ -55,5 +55,8 @@
     "cors": "~2.5.3",
     "supertest": "^0.15.0"
   },
-  "author": "Joe Alves <databentpx@gmail.com> (http://www.github.com/joedotjs)"
+  "contributors": [
+    "Colin VanLang <colinvanlang@gmail.com> (http://www.github.com/covlllp)",
+    "Vincenzo Merolla <vincenzomerolla@gmail.com> (http://www.github.com/vincenzomerolla)"
+  ]
 }
