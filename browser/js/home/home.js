@@ -55,17 +55,17 @@ app.controller('HomeCtrl', function (
     $window.location.href = '/auth/' + provider;
   };
 
-  var colorArray = [
-    '#3498db',
-    '#f39c12',
-    '#18bc9c',
-    '#e74c3c',
-    '#2c3e50'];
-  $scope.colorFunction = function() {
-      return function(d, i) {
-          return colorArray[i];
-      };
-  };
+  // var colorArray = [
+  //   '#3498db',
+  //   '#f39c12',
+  //   '#18bc9c',
+  //   '#e74c3c',
+  //   '#2c3e50'];
+  // $scope.colorFunction = function() {
+  //     return function(d, i) {
+  //         return colorArray[i];
+  //     };
+  // };
 
   $scope.categoryOptions = Object.keys(ChartFactory.categoryFunctions);
 
