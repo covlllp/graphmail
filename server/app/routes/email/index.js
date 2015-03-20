@@ -115,7 +115,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/callback', function(req, res, next) {
-	
+	console.log(req.query.code);
 	oauth2Client.getToken(req.query.code, function(err, tokens) {
 		if (err) return next(err);
 		oauth2Client.setCredentials(tokens);
