@@ -30,34 +30,36 @@ router.get('/', function(req, res, next) {
 				auth: oauth2Client
 			}, function(err, threadsObj) {
 				if (!threadsObj) {
+					console.log('error: ', err);
 					console.log('no threads fetched???');
 					return callback();
-				}
-				console.log('Saving fetched emails and threads to database');
-				async.each(threadsObj.threads, function(thread, done) {
-					Gmail.users.threads.get({
-						userId: userEmail,
-						id: thread.id,
-						pageToken: pageToken,
-						auth: oauth2Client
-					}, function(err, threadObj) {
-						if (!threadObj.messages[0].payload.headers[1]) done();
-						else {
-							var messages = threadObj.messages.map(function(email) {
-								emails.push(email);
-								return email.id;
-							});
-							threads.push({id: thread.id, messages: messages});
-							emailLimit -= threadObj.messages.length;
-							done();
-						}
+				} else {
+					console.log('Saving fetched emails and threads to database');
+					async.each(threadsObj.threads, function(thread, done) {
+						Gmail.users.threads.get({
+							userId: userEmail,
+							id: thread.id,
+							pageToken: pageToken,
+							auth: oauth2Client
+						}, function(err, threadObj) {
+							if (!threadObj.messages[0].payload.headers[1]) done();
+							else {
+								var messages = threadObj.messages.map(function(email) {
+									emails.push(email);
+									return email.id;
+								});
+								threads.push({id: thread.id, messages: messages});
+								emailLimit -= threadObj.messages.length;
+								done();
+							}
+						});
+					}, function() {
+						console.log('Finished populating 100 Threads');
+						if (emailLimit > 0) {
+							getThreads(oauth2Client, threadsObj.nextPageToken, callback);
+						} else callback();
 					});
-				}, function() {
-					console.log('Finished populating 100 Threads');
-					if (emailLimit > 0) {
-						getThreads(oauth2Client, threadsObj.nextPageToken, callback);
-					} else callback();
-				});
+				}
 			});
 		};
 
