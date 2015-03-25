@@ -62,7 +62,10 @@ module.exports = function (app) {
             var OAuth2 = Google.auth.OAuth2;
             var oauth2Client = require('./../../../env/googleOauthClient');
             var url = oauth2Client.generateAuthUrl({
-                scope: 'https://www.googleapis.com/auth/gmail.readonly'
+                scope: ['https://www.googleapis.com/auth/gmail.readonly',
+                    'https://www.googleapis.com/auth/userinfo.profile',
+                    'https://www.googleapis.com/auth/userinfo.email'
+                ]
             });
             res.redirect(url);
             // res.redirect('/');
