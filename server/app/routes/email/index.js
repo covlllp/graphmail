@@ -29,6 +29,10 @@ router.get('/', function(req, res, next) {
 				pageToken: pageToken,
 				auth: oauth2Client
 			}, function(err, threadsObj) {
+				if (!threadsObj) {
+					console.log('no threads fetched???');
+					return callback();
+				}
 				console.log('Saving fetched emails and threads to database');
 				async.each(threadsObj.threads, function(thread, done) {
 					Gmail.users.threads.get({
