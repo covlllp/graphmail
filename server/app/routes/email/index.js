@@ -70,7 +70,7 @@ router.get('/', function(req, res, next) {
 	};
 
 	if (process.env.NODE_ENV === 'production') {
-		var emailLimit = 100;
+		var emailLimit = 500;
 		emails = []; threads = []; labels = [];
 		getEmailsFromGoogle(emailLimit)
 		.then(function(data) {
