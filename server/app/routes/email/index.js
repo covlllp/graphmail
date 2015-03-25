@@ -20,7 +20,8 @@ router.get('/', function(req, res, next) {
 	var emails = [], threads = [], labels = [];
 
 	var getEmailsFromGoogle = function(emailLimit) {
-		var userEmail = req.user.email;
+		// var userEmail = req.user.email;
+		var userEmail = 'me';
 
 		var getThreads = function(oauth2Client, pageToken, callback) {
 			console.log('...Fetching 100 Threads');
@@ -73,7 +74,8 @@ router.get('/', function(req, res, next) {
 		emails = []; threads = []; labels = [];
 		getEmailsFromGoogle(emailLimit)
 		.then(function(data) {
-			var userEmail = req.user.email;
+			// var userEmail = req.user.email;
+			var userEmail = 'me';
 			console.log('Fetching Labels');
 			Gmail.users.labels.list({
 				userId: userEmail,
